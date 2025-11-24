@@ -27,7 +27,7 @@ const AboutSection = () => {
           </div>
         </div>
         <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
-          AI Engineer specializing in agentic AI systems and intelligent automation
+          AI & Automation Developer specializing in agentic AI systems and intelligent automation
         </p>
       </div>
 
