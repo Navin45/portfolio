@@ -26,11 +26,11 @@ const ContactSection = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const webhookUrl = "https://fly-arriving-earwig.ngrok-free.app/webhook/get-in-touch";
+    const webhookUrl = "https://n8n-navin-eagle.onrender.com/webhook/get-in-touch";
 
     try {
       console.log("Sending form data to webhook:", webhookUrl);
-      
+
       const response = await fetch(webhookUrl, {
         method: "POST",
         headers: {
@@ -61,7 +61,7 @@ const ContactSection = () => {
         subject: '',
         message: ''
       });
-      
+
     } catch (error) {
       console.error("Error sending message to webhook:", error);
       toast({
@@ -91,34 +91,50 @@ const ContactSection = () => {
 
   const socialLinks = [
     {
-      icon: <Github className="w-5 h-5" />,
+      icon: <Github className="w-6 h-6" />,
       name: 'GitHub',
       href: 'https://github.com/Navin45',
-      color: 'hover:text-gray-400'
+      color: 'text-foreground hover:text-primary'
     },
     {
-      icon: <Linkedin className="w-5 h-5" />,
+      icon: <Linkedin className="w-6 h-6" />,
       name: 'LinkedIn',
       href: 'https://www.linkedin.com/in/navin23/',
-      color: 'hover:text-blue-400'
+      color: 'text-foreground hover:text-blue-400'
     },
     {
-      icon: <Twitter className="w-5 h-5" />,
+      icon: <Twitter className="w-6 h-6" />,
       name: 'Twitter',
       href: 'https://x.com/Navin_Rajput45',
-      color: 'hover:text-sky-400'
+      color: 'text-foreground hover:text-sky-400'
     }
   ];
 
   return (
-    <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="hero-text">Get In Touch</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Ready to collaborate on your next project? Let's discuss how we can bring your ideas to life 
+    <section id="contact" className="relative py-32 px-4 bg-background overflow-hidden">
+      {/* Neural Network Background */}
+      <div className="absolute inset-0 neural-network-bg animate-matrix-grid opacity-30"></div>
+      <div className="absolute inset-0 quantum-grid animate-matrix-grid"></div>
+
+      {/* Floating Data Streams */}
+      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-primary/50 to-transparent animate-data-stream"></div>
+      <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-accent/50 to-transparent animate-data-stream" style={{ animationDelay: "1s" }}></div>
+
+      <div className="relative max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-20">
+          <div className="relative inline-block">
+            <h2 className="text-6xl md:text-7xl font-bold mb-6 animate-parallax-3d">
+              Get In <span className="hero-text">Touch</span>
+            </h2>
+            {/* Quantum Ripple Effect */}
+            <div className="absolute inset-0 -z-10">
+              <div className="absolute top-1/2 left-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/30 animate-quantum-ripple"></div>
+              <div className="absolute top-1/2 left-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 animate-quantum-ripple" style={{ animationDelay: "1s" }}></div>
+            </div>
+          </div>
+          <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
+            Ready to collaborate on your next project? Let's discuss how we can bring your ideas to life
             with innovative solutions and cutting-edge technology.
           </p>
         </div>
@@ -127,168 +143,203 @@ const ContactSection = () => {
           {/* Contact Information */}
           <div className="lg:col-span-1 space-y-8">
             <div className="animate-fade-in-up">
-              <h3 className="text-2xl font-bold mb-6 text-accent">Let's Connect</h3>
-              <p className="text-muted-foreground mb-8">
-                I'm always interested in new opportunities and exciting projects. 
+              <div className="relative inline-block mb-6">
+                <h3 className="text-3xl font-bold hero-text">Let's Connect</h3>
+                <div className="absolute -bottom-2 left-0 w-20 h-1 holographic-gradient animate-holographic"></div>
+              </div>
+              <p className="text-muted-foreground leading-relaxed">
+                I'm always interested in new opportunities and exciting projects.
                 Whether you have a question or just want to say hi, feel free to reach out!
               </p>
             </div>
 
             <div className="space-y-6">
               {contactInfo.map((info, index) => (
-                <a
-                  key={info.title}
-                  href={info.href}
-                  className="flex items-center space-x-4 p-4 glass-card rounded-xl hover:border-accent transition-all duration-300 group animate-scale-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="text-accent group-hover:scale-110 transition-transform duration-300">
-                    {info.icon}
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">{info.title}</p>
-                    <p className="text-muted-foreground">{info.value}</p>
-                  </div>
-                </a>
+                <div key={info.title} className="group relative">
+                  {/* Holographic glow */}
+                  <div className="absolute -inset-1 holographic-gradient animate-holographic rounded-xl blur opacity-0 group-hover:opacity-60 transition-opacity duration-700"></div>
+
+                  <a
+                    href={info.href}
+                    className="relative flex items-center space-x-4 p-5 glass-card rounded-xl hover:scale-105 transition-all duration-500 animate-scale-in hover:shadow-[0_0_30px_hsl(160_84%_60%_/_0.3)]"
+                    style={{ animationDelay: `${index * 0.1}s` }}
+                  >
+                    <div className="text-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                      {info.icon}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground group-hover:text-primary transition-colors">{info.title}</p>
+                      <p className="text-muted-foreground text-sm">{info.value}</p>
+                    </div>
+                  </a>
+                </div>
               ))}
             </div>
 
             <div className="pt-8">
-              <h4 className="text-lg font-semibold mb-4 text-foreground">Follow Me</h4>
-              <div className="flex space-x-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    className={`p-3 glass-card rounded-full hover:scale-110 transition-all duration-300 animate-pulse-glow ${social.color}`}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+              <h4 className="text-xl font-bold mb-6 text-white flex items-center gap-2">
+                <div className="w-1 h-6 bg-primary"></div>
+                Follow Me
+              </h4>
+              <div className="flex gap-4">
+                <a
+                  href="https://github.com/Navin45"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 hover:scale-110 transition-all duration-300"
+                  aria-label="GitHub"
+                >
+                  <Github className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/navin23/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-blue-500/30 hover:scale-110 transition-all duration-300"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="https://x.com/Navin_Rajput45"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-sky-500/30 hover:scale-110 transition-all duration-300"
+                  aria-label="Twitter"
+                >
+                  <Twitter className="w-6 h-6 text-white" />
+                </a>
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <Card className="glass-card border-border animate-scale-in">
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-center">Send Me a Message</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label htmlFor="firstName" className="text-sm font-medium text-foreground">
-                        First Name
+            <div className="group relative">
+              {/* Holographic frame */}
+              <div className="absolute -inset-2 holographic-gradient animate-holographic rounded-2xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity duration-700"></div>
+
+              <Card className="relative glass-card border-border animate-scale-in hover:shadow-[0_0_60px_hsl(160_84%_60%_/_0.3)] transition-all duration-700">
+                <CardHeader className="text-center pb-8">
+                  <CardTitle className="text-3xl font-bold">
+                    <span className="hero-text">Send Me a Message</span>
+                  </CardTitle>
+                  <p className="text-muted-foreground mt-2">Fill out the form below and I'll get back to you soon</p>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-2 group/input">
+                        <label htmlFor="firstName" className="text-sm font-medium text-foreground flex items-center gap-2">
+                          <div className="w-1 h-4 bg-primary/50 group-focus-within/input:bg-primary transition-colors"></div>
+                          First Name
+                        </label>
+                        <Input
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={handleInputChange}
+                          placeholder="John"
+                          className="glass-card border-border focus:border-primary focus:shadow-[0_0_20px_hsl(160_84%_60%_/_0.2)] transition-all duration-300"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2 group/input">
+                        <label htmlFor="lastName" className="text-sm font-medium text-foreground flex items-center gap-2">
+                          <div className="w-1 h-4 bg-primary/50 group-focus-within/input:bg-primary transition-colors"></div>
+                          Last Name
+                        </label>
+                        <Input
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={handleInputChange}
+                          placeholder="Doe"
+                          className="glass-card border-border focus:border-primary focus:shadow-[0_0_20px_hsl(160_84%_60%_/_0.2)] transition-all duration-300"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 group/input">
+                      <label htmlFor="email" className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <div className="w-1 h-4 bg-primary/50 group-focus-within/input:bg-primary transition-colors"></div>
+                        Email
                       </label>
                       <Input
-                        id="firstName"
-                        value={formData.firstName}
+                        id="email"
+                        type="email"
+                        value={formData.email}
                         onChange={handleInputChange}
-                        placeholder="John"
-                        className="glass-card border-border focus:border-accent transition-all duration-300"
+                        placeholder="john.doe@example.com"
+                        className="glass-card border-border focus:border-primary focus:shadow-[0_0_20px_hsl(160_84%_60%_/_0.2)] transition-all duration-300"
                         required
                       />
                     </div>
-                    <div className="space-y-2">
-                      <label htmlFor="lastName" className="text-sm font-medium text-foreground">
-                        Last Name
+
+                    <div className="space-y-2 group/input">
+                      <label htmlFor="subject" className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <div className="w-1 h-4 bg-primary/50 group-focus-within/input:bg-primary transition-colors"></div>
+                        Subject
                       </label>
                       <Input
-                        id="lastName"
-                        value={formData.lastName}
+                        id="subject"
+                        value={formData.subject}
                         onChange={handleInputChange}
-                        placeholder="Doe"
-                        className="glass-card border-border focus:border-accent transition-all duration-300"
+                        placeholder="Project Collaboration"
+                        className="glass-card border-border focus:border-primary focus:shadow-[0_0_20px_hsl(160_84%_60%_/_0.2)] transition-all duration-300"
                         required
                       />
                     </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium text-foreground">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="john.doe@example.com"
-                      className="glass-card border-border focus:border-accent transition-all duration-300"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="subject" className="text-sm font-medium text-foreground">
-                      Subject
-                    </label>
-                    <Input
-                      id="subject"
-                      value={formData.subject}
-                      onChange={handleInputChange}
-                      placeholder="Project Collaboration"
-                      className="glass-card border-border focus:border-accent transition-all duration-300"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium text-foreground">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={handleInputChange}
-                      placeholder="Tell me about your project..."
-                      rows={6}
-                      className="glass-card border-border focus:border-accent resize-none transition-all duration-300"
-                      required
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="w-full relative overflow-hidden bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-4 rounded-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed group"
-                  >
-                    {/* Background glow effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/50 to-accent/50 blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                    
-                    {/* Button content */}
-                    <div className="relative z-10 flex items-center justify-center">
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                          Sending Message...
-                        </>
-                      ) : (
-                        <>
-                          <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform duration-300" />
-                          Send Message
-                        </>
-                      )}
+                    <div className="space-y-2 group/input">
+                      <label htmlFor="message" className="text-sm font-medium text-foreground flex items-center gap-2">
+                        <div className="w-1 h-4 bg-primary/50 group-focus-within/input:bg-primary transition-colors"></div>
+                        Message
+                      </label>
+                      <Textarea
+                        id="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Tell me about your project..."
+                        rows={6}
+                        className="glass-card border-border focus:border-primary focus:shadow-[0_0_20px_hsl(160_84%_60%_/_0.2)] resize-none transition-all duration-300"
+                        required
+                      />
                     </div>
-                    
-                    {/* Ripple effect */}
-                    <div className="absolute inset-0 -z-10">
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+
+                    <div className="relative group/button">
+                      {/* Button glow effect */}
+                      <div className="absolute -inset-1 holographic-gradient animate-holographic rounded-2xl blur-lg opacity-0 group-hover/button:opacity-60 transition-opacity duration-700"></div>
+
+                      <Button
+                        type="submit"
+                        size="lg"
+                        disabled={isSubmitting}
+                        className="relative w-full bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-semibold py-6 rounded-2xl transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_40px_hsl(160_84%_60%_/_0.4)] disabled:opacity-70 disabled:cursor-not-allowed group"
+                      >
+                        {/* Button content */}
+                        <div className="relative z-10 flex items-center justify-center">
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                              Sending Message...
+                            </>
+                          ) : (
+                            <>
+                              <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+                              Send Message
+                            </>
+                          )}
+                        </div>
+                      </Button>
                     </div>
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 };
 

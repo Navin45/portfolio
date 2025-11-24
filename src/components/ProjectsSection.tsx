@@ -1,21 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Github, Code, Smartphone, Globe, Database, Activity, TrendingUp, Star, GitFork, Eye } from 'lucide-react';
-
-// Import project images
-import webDevelopmentImage from '@/assets/projects/web-development.jpg';
-import pythonDataScienceImage from '@/assets/projects/python-data-science.jpg';
-import mobileDevelopmentImage from '@/assets/projects/mobile-development.jpg';
-import backendDatabaseImage from '@/assets/projects/backend-database.jpg';
-import generalCodingImage from '@/assets/projects/general-coding.jpg';
-import devopsCloudImage from '@/assets/projects/devops-cloud.jpg';
-import aiChatbotImage from '@/assets/projects/ai-chatbot.jpg';
-import spamDetectionImage from '@/assets/projects/spam-detection.jpg';
-import ecommerceAppImage from '@/assets/projects/ecommerce-app.jpg';
-import taskManagementImage from '@/assets/projects/task-management.jpg';
-import apiProjectImage from '@/assets/projects/api-project.jpg';
-import dataAnalyticsImage from '@/assets/projects/data-analytics.jpg';
+import { Github, Code, Smartphone, Globe, Database, Activity, TrendingUp, Star, GitFork, Eye, Cpu, Zap, Box, Terminal } from 'lucide-react';
 
 interface GitHubRepo {
   id: number;
@@ -72,106 +57,64 @@ const ProjectsSection = () => {
     return () => observer.disconnect();
   }, []);
 
-  const getLanguageIcon = (language: string | null) => {
+  const getLanguageConfig = (language: string | null) => {
     switch (language) {
       case 'JavaScript':
+        return {
+          icon: <Code className="w-12 h-12" />,
+          gradient: 'from-yellow-500/20 via-yellow-600/10 to-orange-500/20',
+          color: 'text-yellow-400'
+        };
       case 'TypeScript':
-        return <Code className="w-6 h-6" />;
+        return {
+          icon: <Code className="w-12 h-12" />,
+          gradient: 'from-blue-500/20 via-blue-600/10 to-cyan-500/20',
+          color: 'text-blue-400'
+        };
       case 'Python':
-        return <Database className="w-6 h-6" />;
+        return {
+          icon: <Cpu className="w-12 h-12" />,
+          gradient: 'from-blue-600/20 via-yellow-500/10 to-blue-400/20',
+          color: 'text-blue-300'
+        };
       case 'Java':
+        return {
+          icon: <Smartphone className="w-12 h-12" />,
+          gradient: 'from-red-500/20 via-orange-600/10 to-red-400/20',
+          color: 'text-red-400'
+        };
       case 'Kotlin':
-        return <Smartphone className="w-6 h-6" />;
+        return {
+          icon: <Smartphone className="w-12 h-12" />,
+          gradient: 'from-purple-500/20 via-pink-600/10 to-purple-400/20',
+          color: 'text-purple-400'
+        };
+      case 'Go':
+        return {
+          icon: <Zap className="w-12 h-12" />,
+          gradient: 'from-cyan-500/20 via-blue-600/10 to-cyan-400/20',
+          color: 'text-cyan-400'
+        };
+      case 'Rust':
+        return {
+          icon: <Box className="w-12 h-12" />,
+          gradient: 'from-orange-600/20 via-red-600/10 to-orange-500/20',
+          color: 'text-orange-400'
+        };
+      case 'HTML':
+      case 'CSS':
+        return {
+          icon: <Globe className="w-12 h-12" />,
+          gradient: 'from-pink-500/20 via-purple-600/10 to-pink-400/20',
+          color: 'text-pink-400'
+        };
       default:
-        return <Globe className="w-6 h-6" />;
+        return {
+          icon: <Terminal className="w-12 h-12" />,
+          gradient: 'from-primary/20 via-accent/10 to-primary/20',
+          color: 'text-primary'
+        };
     }
-  };
-
-  const getProjectImage = (repo: GitHubRepo) => {
-    const projectName = repo.name.toLowerCase();
-    const description = (repo.description || '').toLowerCase();
-    const topics = repo.topics.map(t => t.toLowerCase());
-    
-    // Combine all text for better matching
-    const searchText = `${projectName} ${description} ${topics.join(' ')}`;
-    
-    // AI/ML/Chatbot related projects
-    if (searchText.includes('ai') || searchText.includes('chatbot') || 
-        searchText.includes('bot') || searchText.includes('neural') ||
-        searchText.includes('machine learning') || searchText.includes('ml') ||
-        projectName.includes('ai-') || projectName.includes('chatbot')) {
-      return aiChatbotImage;
-    }
-    
-    // Spam/Security related projects
-    if (searchText.includes('spam') || searchText.includes('security') ||
-        searchText.includes('detection') || searchText.includes('filter') ||
-        projectName.includes('spam')) {
-      return spamDetectionImage;
-    }
-    
-    // E-commerce/Shopping projects
-    if (searchText.includes('ecommerce') || searchText.includes('shop') ||
-        searchText.includes('cart') || searchText.includes('store') ||
-        searchText.includes('marketplace') || searchText.includes('payment')) {
-      return ecommerceAppImage;
-    }
-    
-    // Task/Project Management
-    if (searchText.includes('task') || searchText.includes('todo') ||
-        searchText.includes('project') || searchText.includes('management') ||
-        searchText.includes('kanban') || searchText.includes('tracker')) {
-      return taskManagementImage;
-    }
-    
-    // API/Backend projects
-    if (searchText.includes('api') || searchText.includes('backend') ||
-        searchText.includes('server') || searchText.includes('rest') ||
-        searchText.includes('graphql') || repo.language === 'Go' ||
-        repo.language === 'Rust') {
-      return apiProjectImage;
-    }
-    
-    // Data Science/Analytics
-    if (searchText.includes('data') || searchText.includes('analytics') ||
-        searchText.includes('analysis') || searchText.includes('visualization') ||
-        searchText.includes('dashboard') || repo.language === 'Python' ||
-        searchText.includes('pandas') || searchText.includes('numpy')) {
-      return dataAnalyticsImage;
-    }
-    
-    // Mobile Development
-    if (repo.language === 'Java' || repo.language === 'Kotlin' ||
-        repo.language === 'Swift' || searchText.includes('android') ||
-        searchText.includes('ios') || searchText.includes('mobile') ||
-        searchText.includes('flutter') || searchText.includes('react native')) {
-      return mobileDevelopmentImage;
-    }
-    
-    // Web Development (React, Vue, Angular, etc.)
-    if (repo.language === 'JavaScript' || repo.language === 'TypeScript' ||
-        searchText.includes('react') || searchText.includes('vue') ||
-        searchText.includes('angular') || searchText.includes('web') ||
-        searchText.includes('frontend') || searchText.includes('website')) {
-      return webDevelopmentImage;
-    }
-    
-    // DevOps/Cloud
-    if (searchText.includes('docker') || searchText.includes('kubernetes') ||
-        searchText.includes('cloud') || searchText.includes('aws') ||
-        searchText.includes('devops') || searchText.includes('deploy')) {
-      return devopsCloudImage;
-    }
-    
-    // Database related
-    if (searchText.includes('database') || searchText.includes('sql') ||
-        searchText.includes('mongodb') || searchText.includes('postgresql') ||
-        repo.language === 'SQL') {
-      return backendDatabaseImage;
-    }
-    
-    // Default fallback
-    return generalCodingImage;
   };
 
   const formatDate = (dateString: string) => {
@@ -183,138 +126,192 @@ const ProjectsSection = () => {
   };
 
   return (
-    <section ref={sectionRef} id="projects" className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-accent/10 border border-accent/20 mb-6 animate-fade-in-up">
-            <Github className="w-4 h-4 text-accent animate-pulse" />
-            <span className="text-sm font-medium text-accent">GitHub Repositories</span>
+    <section ref={sectionRef} id="projects" className="relative py-32 px-4 bg-background overflow-hidden">
+      {/* Neural Network Background */}
+      <div className="absolute inset-0 neural-network-bg animate-matrix-grid opacity-30"></div>
+      <div className="absolute inset-0 quantum-grid animate-matrix-grid"></div>
+
+      {/* Floating Data Streams */}
+      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-primary/50 to-transparent animate-data-stream"></div>
+      <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-accent/50 to-transparent animate-data-stream" style={{ animationDelay: "1s" }}></div>
+
+      <div className="relative max-w-7xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-20">
+          <div className="relative inline-block">
+            <h2 className="text-6xl md:text-7xl font-bold mb-6 animate-parallax-3d">
+              Featured <span className="hero-text">Projects</span>
+            </h2>
+            {/* Quantum Ripple Effect */}
+            <div className="absolute inset-0 -z-10">
+              <div className="absolute top-1/2 left-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/30 animate-quantum-ripple"></div>
+              <div className="absolute top-1/2 left-1/2 w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 animate-quantum-ripple" style={{ animationDelay: "1s" }}></div>
+            </div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            <span className="hero-text">My Projects</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Real projects from my GitHub profile with live statistics and recent activity.
+          <p className="text-muted-foreground text-xl max-w-3xl mx-auto leading-relaxed">
+            Live projects from my GitHub with real-time statistics and cutting-edge technologies
           </p>
         </div>
 
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(6)].map((_, index) => (
-              <Card key={index} className="project-card animate-pulse">
-                <div className="h-48 bg-muted"></div>
-                <CardHeader>
-                  <div className="h-6 bg-muted rounded w-3/4"></div>
-                  <div className="h-4 bg-muted rounded w-full"></div>
-                  <div className="h-4 bg-muted rounded w-2/3"></div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2 mb-4">
-                    <div className="h-6 bg-muted rounded-full w-16"></div>
-                    <div className="h-6 bg-muted rounded-full w-20"></div>
-                  </div>
-                  <div className="h-10 bg-muted rounded"></div>
-                </CardContent>
-              </Card>
+              <div key={index} className="glass-card p-6 rounded-xl animate-pulse">
+                <div className="h-48 bg-muted/20 rounded-lg mb-4"></div>
+                <div className="h-6 bg-muted/20 rounded w-3/4 mb-3"></div>
+                <div className="h-4 bg-muted/20 rounded w-full mb-2"></div>
+                <div className="h-4 bg-muted/20 rounded w-2/3 mb-4"></div>
+                <div className="flex gap-2 mb-4">
+                  <div className="h-6 bg-muted/20 rounded-full w-16"></div>
+                  <div className="h-6 bg-muted/20 rounded-full w-20"></div>
+                </div>
+                <div className="h-10 bg-muted/20 rounded"></div>
+              </div>
             ))}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {repositories.map((repo, index) => (
-              <Card
+              <div
                 key={repo.id}
-                className={`project-card group relative overflow-hidden cursor-pointer transition-all duration-500 hover:scale-105 hover:-rotate-1 hover:shadow-2xl hover:shadow-accent/20 ${
-                  isVisible ? 'animate-fade-in-up opacity-100' : 'opacity-0'
-                }`}
-                style={{ 
-                  animationDelay: isVisible ? `${index * 0.15}s` : '0s',
-                  transformStyle: 'preserve-3d'
+                className={`group relative ${isVisible ? 'animate-fade-in-up opacity-100' : 'opacity-0'
+                  }`}
+                style={{
+                  animationDelay: isVisible ? `${index * 0.15}s` : '0s'
                 }}
                 onMouseEnter={() => setHoveredProject(repo.name)}
                 onMouseLeave={() => setHoveredProject(null)}
               >
-                {/* Project image with smart category detection */}
-                <div className="relative h-48 overflow-hidden transition-all duration-500 group-hover:scale-110">
-                  <img 
-                    src={getProjectImage(repo)} 
-                    alt={`${repo.name} project`}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-300"></div>
-                  
-                  
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
+                {/* Holographic Frame */}
+                <div className="absolute -inset-1 holographic-gradient animate-holographic rounded-2xl blur-lg opacity-0 group-hover:opacity-60 transition-opacity duration-700"></div>
 
-                <CardHeader className="relative z-10">
-                  <CardTitle className="text-xl font-bold text-foreground group-hover:text-accent transition-colors flex items-center justify-between">
-                    {repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    <Activity className="w-4 h-4 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </CardTitle>
-                  <CardDescription className="text-muted-foreground leading-relaxed">
-                    {repo.description || 'No description available'}
-                  </CardDescription>
-                  <div className="text-xs text-muted-foreground">
-                    Updated: {formatDate(repo.updated_at)}
-                  </div>
-                </CardHeader>
+                {/* Main Card */}
+                <div className="relative glass-card rounded-xl overflow-hidden transform hover:scale-105 transition-all duration-700 hover:shadow-[0_0_60px_hsl(160_84%_60%_/_0.4)]">
+                  {/* Gradient Header with Tech Icon */}
+                  <div className={`relative h-48 overflow-hidden bg-gradient-to-br ${getLanguageConfig(repo.language).gradient}`}>
+                    {/* Animated mesh background */}
+                    <div className="absolute inset-0 opacity-30">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]"></div>
+                      <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_25%,rgba(255,255,255,0.05)_50%,transparent_50%,transparent_75%,rgba(255,255,255,0.05)_75%)] bg-[length:60px_60px] animate-pulse"></div>
+                    </div>
 
-                <CardContent className="space-y-4 relative z-10">
-                  {/* Language and topics */}
-                  <div className="flex flex-wrap gap-2">
+                    {/* Holographic Overlay */}
+                    <div className="absolute inset-0 holographic-gradient opacity-0 group-hover:opacity-20 transition-opacity duration-700 mix-blend-screen"></div>
+
+                    {/* Center Tech Icon */}
+                    <div className={`absolute inset-0 flex items-center justify-center ${getLanguageConfig(repo.language).color} opacity-40 group-hover:opacity-60 transition-all duration-700 group-hover:scale-110`}>
+                      {getLanguageConfig(repo.language).icon}
+                    </div>
+
+                    {/* Floating particles */}
+                    <div className="absolute top-4 left-4 w-2 h-2 bg-white/30 rounded-full animate-float"></div>
+                    <div className="absolute top-8 right-8 w-3 h-3 bg-white/20 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
+                    <div className="absolute bottom-6 left-12 w-2 h-2 bg-white/25 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+
+                    {/* Language badge */}
                     {repo.language && (
-                      <span className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full border border-primary/20">
-                        {repo.language}
-                      </span>
+                      <div className="absolute top-4 right-4 px-3 py-1 glass-card rounded-full backdrop-blur-md">
+                        <span className={`text-xs font-semibold ${getLanguageConfig(repo.language).color}`}>
+                          {repo.language}
+                        </span>
+                      </div>
                     )}
-                    {repo.topics.slice(0, 3).map((topic) => (
-                      <span 
-                        key={topic}
-                        className="px-3 py-1 bg-muted text-muted-foreground text-xs rounded-full border border-border hover:border-accent hover:bg-accent/10 hover:text-accent transition-all duration-300"
-                      >
-                        {topic}
-                      </span>
-                    ))}
+
+                    {/* Bottom gradient overlay */}
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
                   </div>
 
+                  {/* Content */}
+                  <div className="p-6 space-y-4">
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">
+                      {repo.name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </h3>
 
-                  {/* Action button */}
-                  <div className="pt-2">
+                    {/* Description */}
+                    <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
+                      {repo.description || 'An innovative project showcasing modern development practices'}
+                    </p>
+
+                    {/* GitHub Stats */}
+                    <div className="flex items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+                        <Star className="w-4 h-4" />
+                        <span>{repo.stargazers_count}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-muted-foreground hover:text-accent transition-colors">
+                        <GitFork className="w-4 h-4" />
+                        <span>{repo.forks_count}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-muted-foreground hover:text-primary transition-colors">
+                        <Eye className="w-4 h-4" />
+                        <span>{repo.watchers_count}</span>
+                      </div>
+                    </div>
+
+                    {/* Tech Stack */}
+                    <div className="flex flex-wrap gap-2">
+                      {repo.language && (
+                        <span className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full border border-primary/20 font-medium">
+                          {repo.language}
+                        </span>
+                      )}
+                      {repo.topics.slice(0, 2).map((topic) => (
+                        <span
+                          key={topic}
+                          className="px-3 py-1 bg-accent/10 text-accent text-xs rounded-full border border-accent/20 hover:bg-accent/20 transition-all duration-300 font-medium"
+                        >
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Button */}
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full glass-card border-border hover:border-accent hover:bg-accent/5 group/btn transition-all duration-300 hover:shadow-lg hover:shadow-accent/20"
+                      className="w-full glass-card border-border hover:border-primary hover:bg-primary/5 group/btn transition-all duration-300 hover:shadow-lg hover:shadow-primary/20"
                       asChild
                     >
                       <a href={repo.html_url} target="_blank" rel="noopener noreferrer">
                         <Github className="w-4 h-4 mr-2 group-hover/btn:rotate-12 transition-transform duration-300" />
-                        <span className="group-hover/btn:text-accent transition-colors">View Repository</span>
+                        <span className="group-hover/btn:text-primary transition-colors">View Repository</span>
                       </a>
                     </Button>
-                  </div>
-                </CardContent>
 
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-accent/0 via-accent/5 to-accent/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-lg"></div>
-              </Card>
+                    {/* Updated Date */}
+                    <div className="text-xs text-muted-foreground/60 text-center pt-2 border-t border-border/50">
+                      Updated {formatDate(repo.updated_at)}
+                    </div>
+                  </div>
+
+                  {/* Animated Border */}
+                  <div className="absolute inset-0 rounded-xl border border-primary/0 group-hover:border-primary/30 transition-all duration-700 pointer-events-none"></div>
+                </div>
+              </div>
             ))}
           </div>
         )}
 
         {/* Enhanced CTA */}
-        <div className="text-center mt-16">
-          <Button
-            variant="outline"
-            size="lg"
-            className="glass-card border-border hover:border-accent px-8 py-3 rounded-full group hover:shadow-xl hover:shadow-accent/20 transition-all duration-300"
-            asChild
-          >
-            <a href="https://github.com/Navin45" target="_blank" rel="noopener noreferrer">
-              <Github className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-              <span className="group-hover:text-accent transition-colors">View All Repositories</span>
-            </a>
-          </Button>
+        <div className="text-center mt-20">
+          <div className="relative inline-block">
+            {/* Glow effect */}
+            <div className="absolute -inset-4 holographic-gradient animate-holographic rounded-full blur-xl opacity-30"></div>
+
+            <Button
+              variant="outline"
+              size="lg"
+              className="relative glass-card border-border hover:border-primary px-8 py-6 rounded-full group hover:shadow-xl hover:shadow-primary/30 transition-all duration-500 hover:scale-110"
+              asChild
+            >
+              <a href="https://github.com/Navin45" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3">
+                <Github className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
+                <span className="text-lg font-semibold group-hover:text-primary transition-colors">Explore All Projects</span>
+                <TrendingUp className="w-5 h-5 text-accent group-hover:translate-x-1 transition-transform duration-300" />
+              </a>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

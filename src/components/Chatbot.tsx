@@ -27,13 +27,32 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const chatCardRef = useRef<HTMLDivElement>(null);
 
+  // Generate or retrieve session ID on component mount
+  useEffect(() => {
+    const getOrCreateSessionId = () => {
+      const storageKey = 'chatbot_session_id';
+      let existingSessionId = localStorage.getItem(storageKey);
+
+      if (!existingSessionId) {
+        // Generate a new unique session ID
+        existingSessionId = crypto.randomUUID();
+        localStorage.setItem(storageKey, existingSessionId);
+      }
+
+      setSessionId(existingSessionId);
+    };
+
+    getOrCreateSessionId();
+  }, []);
+
   const scrollToBottom = () => {
     setTimeout(() => {
-      messagesEndRef.current?.scrollIntoView({ 
+      messagesEndRef.current?.scrollIntoView({
         behavior: 'smooth',
         block: 'end'
       });
@@ -66,7 +85,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://fly-arriving-earwig.ngrok-free.app/webhook/c958b74f-390f-4634-963f-3d284f057bca/chat', {
+      const response = await fetch('https://n8n-navin-eagle.onrender.com/webhook/portfolio-chatbot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,6 +93,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
         body: JSON.stringify({
           message: currentInput,
           timestamp: new Date().toISOString(),
+          sessionId: sessionId,
         }),
       });
 
@@ -87,7 +107,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
       if (contentType.includes('application/json')) {
         try {
           const data = await response.json();
-          
+
           // Check if this is an execution started response
           if (data.executionStarted && data.executionId) {
             const executionId = data.executionId;
@@ -133,12 +153,12 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
   const waitForExecutionResult = async (executionId: string): Promise<string> => {
     const maxAttempts = 30;
     const pollInterval = 1000;
-    
+
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       try {
         await new Promise(resolve => setTimeout(resolve, pollInterval));
-        
-        const resultResponse = await fetch(`https://fly-arriving-earwig.ngrok-free.app/webhook/c958b74f-390f-4634-963f-3d284f057bca/result/${executionId}`, {
+
+        const resultResponse = await fetch(`https://n8n-navin-eagle.onrender.com/webhook/portfolio-chatbot/result/${executionId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -155,7 +175,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
         console.log(`Polling attempt ${attempt + 1} failed:`, error);
       }
     }
-    
+
     return 'Response took too long. Please try again.';
   };
 
@@ -188,7 +208,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('https://fly-arriving-earwig.ngrok-free.app/webhook/c958b74f-390f-4634-963f-3d284f057bca/chat', {
+      const response = await fetch('https://n8n-navin-eagle.onrender.com/webhook/portfolio-chatbot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -196,6 +216,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
         body: JSON.stringify({
           message: suggestion,
           timestamp: new Date().toISOString(),
+          sessionId: sessionId,
         }),
       });
 
@@ -209,7 +230,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
       if (contentType.includes('application/json')) {
         try {
           const data = await response.json();
-          
+
           if (data.executionStarted && data.executionId) {
             const executionId = data.executionId;
             responseText = await waitForExecutionResult(executionId);
@@ -252,11 +273,11 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4"
       onClick={handleBackdropClick}
     >
-      <div 
+      <div
         ref={chatCardRef}
         className="bg-card rounded-2xl shadow-2xl w-full max-w-md h-[600px] flex flex-col overflow-hidden border border-border"
       >
@@ -288,7 +309,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
         </div>
 
         {/* Messages */}
-        <div 
+        <div
           className="flex-1 p-4 pt-2 overflow-y-auto bg-muted/20"
           ref={scrollAreaRef}
         >
@@ -313,7 +334,7 @@ export const Chatbot = ({ isOpen, onClose }: ChatbotProps) => {
                 </div>
               </div>
             ))}
-            
+
             {isLoading && (
               <div className="flex justify-start">
                 <div className="bg-card border border-border rounded-2xl rounded-bl-sm px-3 py-2 max-w-[85%]">
