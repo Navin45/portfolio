@@ -1,116 +1,106 @@
-# Navin's Digital Canvas 🎨
+# Navin Singh — AI Engineer Portfolio
 
-Welcome to my personal portfolio website, built with a modern tech stack and featuring a realtime chatbot that lets you interactively explore my work, skills, and experience.
+A production-grade, fast, accessible portfolio website for **Navin Singh**, AI Engineer.
+
+Built with React 18, TypeScript, Vite, and Tailwind CSS with a custom design token system. All personal and technical details are sourced directly from Navin's resume.
 
 ## 🚀 Tech Stack
 
-- ⚡ **Vite** – blazing-fast dev server & build tool
-- 💻 **React + TypeScript** – component-driven, type-safe development
-- 🎨 **Tailwind CSS** – utility-first styling for rapid UI design
-- 🧩 **shadcn/ui** – modern UI components for a polished interface
-- 🤖 **Realtime Chatbot** – interactive guide to my portfolio
+- **Framework**: [React 18](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Bundler & Dev Server**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) with hand-crafted design tokens (`src/design-tokens.css`)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Deployment**: [Vercel](https://vercel.com/) (configured via `vercel.json`)
+- **CI/CD**: GitHub Actions (`.github/workflows/ci.yml`)
 
-## ✨ Features
+## ✨ Highlights
 
-- 🌟 Modern, fast, and responsive portfolio website
-- 🤖 Interactive realtime chatbot for exploring projects & skills
-- 🎨 Clean UI with Tailwind CSS + shadcn/ui
-- 📱 Fully responsive design
-- ⚡ Optimized performance with Vite
-- 🚀 Easy deployment and continuous integration support
+- **Verbatim Resume Data**: Experience, education, projects, and technical skills align with the official resume (`public/Navin_resume.pdf`).
+- **Accessibility & Motion**:
+  - Full keyboard navigation and visible focus rings
+  - Skip to main content link
+  - Respects `prefers-reduced-motion` across all animations and transitions
+  - Strict WCAG AA contrast compliance across all text/surface pairings
+- **Zero External API Dependencies**: Fully self-contained, instant rendering, no third-party tracking or webhooks.
+- **Scroll Synchronization**: IntersectionObserver-based active section tracking and reading progress bar with zero layout thrashing.
+- **Production Hardened**:
+  - Security headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy)
+  - Open Graph and Twitter Card metadata with absolute URLs
+  - 404 page with dynamic `noindex` tag
 
 ## 🛠️ Getting Started
 
-### Work Locally (Recommended)
+### Prerequisites
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/navin-singh0/navins-digital-canvas-78.git
-   ```
+- Node.js 20+ (see `.nvmrc`)
+- npm 10+
 
-2. **Move into the project directory**
-   ```bash
-   cd navins-digital-canvas-78
-   ```
+### Installation
 
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/Navin45/navinportfolio.git
 
-4. **Start the dev server**
-   ```bash
-   npm run dev
-   ```
+# Navigate into the project
+cd navinportfolio
 
-Your app will now be running locally — open it in your browser and start coding! 🎉
+# Install dependencies
+npm install
 
-### Alternative Setup Methods
+# Start local dev server
+npm run dev
+```
 
-#### Edit Directly on GitHub
-1. Navigate to the file you want to edit
-2. Click the ✏️ **Edit** button (top right)
-3. Commit your changes
+### Available Scripts
 
-#### Use GitHub Codespaces
-1. Open your repo on GitHub
-2. Click the green **Code** button → **Codespaces** tab → **New Codespace**
-3. Start editing in the cloud with no setup required
-
-## 🌍 Deployment
-
-This project can be deployed on any static hosting service:
-
-- **Vercel** – best for Vite/React projects
-- **Netlify** – seamless Git integration & previews
-- **GitHub Pages** – free hosting with GitHub
-
-### Deploy on Vercel (Recommended)
-
-1. Push your project to GitHub
-2. Go to [Vercel](https://vercel.com)
-3. Import your repo → Deploy → Done ✅
+| Script | Command | Purpose |
+|---|---|---|
+| `dev` | `npm run dev` | Starts the local development server at `http://localhost:8080` |
+| `build` | `npm run build` | Compiles and builds production assets to `dist/` |
+| `preview` | `npm run preview` | Previews the production build locally |
+| `lint` | `npm run lint` | Runs ESLint across the codebase |
 
 ## 📁 Project Structure
 
 ```
-nnavinportfolio/
+├── .github/
+│   └── workflows/
+│       └── ci.yml             # GitHub Actions CI pipeline
+├── public/
+│   ├── Navin_resume.pdf       # Official resume (source of truth)
+│   ├── favicon.ico            # Site favicon
+│   ├── og-image.png           # 1200x630 Open Graph preview image
+│   └── robots.txt             # Search engine crawler directives
 ├── src/
-│   ├── components/     # React components
-│   ├── pages/         # Page components
-│   ├── styles/        # CSS and styling
-│   └── utils/         # Utility functions
-├── public/            # Static assets
-├── package.json       # Dependencies and scripts
-└── README.md         # This file
+│   ├── components/
+│   │   ├── ContactSection.tsx # Contact links (Email, GitHub, Resume)
+│   │   ├── ExperienceSection.tsx # Experience & Education from resume
+│   │   ├── Footer.tsx         # Site footer
+│   │   ├── HeroGraphic.tsx    # Responsive SVG pipeline illustration
+│   │   ├── HeroSection.tsx    # Hero with resume headline & quick actions
+│   │   ├── Navigation.tsx     # Header navigation & mobile menu
+│   │   ├── ProjectsSection.tsx# 5 featured projects from resume
+│   │   ├── ScrollSyncProvider.tsx # Passive scroll tracking provider
+│   │   └── SkillsSection.tsx  # Categorized technical skills
+│   ├── hooks/
+│   │   ├── use-reveal.ts      # IntersectionObserver scroll reveal hook
+│   │   └── use-scroll-sync.ts # Scroll state context and hook
+│   ├── pages/
+│   │   ├── Index.tsx          # Main single-page portfolio
+│   │   └── NotFound.tsx       # 404 page with noindex meta tag
+│   ├── design-tokens.css      # CSS design tokens & contrast ratios
+│   ├── index.css              # Global styles & Tailwind layers
+│   ├── main.tsx               # React application entrypoint
+│   └── App.tsx                # App router
+├── vercel.json                # Vercel SPA rewrites & security headers
+├── tailwind.config.ts         # Tailwind CSS configuration
+├── vite.config.ts             # Vite build configuration
+└── package.json               # Project dependencies and scripts
 ```
-
-## 🤖 Chatbot Features
-
-The integrated chatbot provides:
-- Real-time interaction with portfolio content
-- Intelligent responses about projects and skills
-- Seamless user experience
-- Interactive exploration of work samples
-
-## 🎯 Scripts
-
-- `npm run dev` – Start development server
-- `npm run build` – Build for production
-- `npm run preview` – Preview production build locally
-- `npm run lint` – Run ESLint
-
 
 ## 📬 Contact
 
-**👨‍💻 Navin Singh**
-
+- **Name**: Navin Singh
+- **Email**: [navinsingh04523@gmail.com](mailto:navinsingh04523@gmail.com)
 - **GitHub**: [@Navin45](https://github.com/Navin45)
-- **LinkedIn**: [navin](https://www.linkedin.com/in/navin)
-- **Portfolio**: [Live Demo](https://your-portfolio-url.vercel.app)
-
-
-
----
-
-⭐ **Star this repo if you found it helpful!** ⭐
+- **Resume**: Available at [`/Navin_resume.pdf`](public/Navin_resume.pdf)
