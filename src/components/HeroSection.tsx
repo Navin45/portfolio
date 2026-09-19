@@ -1,163 +1,122 @@
-import { Button } from '@/components/ui/button';
-import { ArrowDown, Github, Linkedin, Mail, Download } from 'lucide-react';
+import HeroGraphic from './HeroGraphic';
+import { ArrowDown, FileText, Download, Github, Mail } from 'lucide-react';
 
 const HeroSection = () => {
   return (
     <section
-      id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      id="hero"
+      className="min-h-screen flex flex-col items-center justify-center relative"
+      style={{ paddingTop: 'var(--space-16)', paddingBottom: 'var(--space-10)' }}
     >
-      {/* Background image layer */}
-      <div
-        className="absolute inset-0 bg-contain bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://cdn.dribbble.com/users/1162077/screenshots/3848914/programmer.gif')`,
-          backgroundSize: 'cover',
-          imageRendering: 'crisp-edges'
-        }}
-      />
+      <div className="section-container text-center" style={{ paddingBlock: 0 }}>
+        {/* Name and headline render immediately — no animation dependency */}
+        <h1
+          style={{
+            fontSize: 'var(--text-5xl)',
+            fontWeight: 700,
+            color: 'var(--text-primary)',
+            marginBottom: 'var(--space-3)',
+            lineHeight: 1.1,
+          }}
+        >
+          Navin Singh
+        </h1>
 
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/80 to-background/90"></div>
+        <p
+          style={{
+            fontSize: 'var(--text-2xl)',
+            color: 'var(--accent)',
+            fontWeight: 600,
+            marginBottom: 'var(--space-2)',
+          }}
+        >
+          AI Engineer
+        </p>
 
-      {/* Neural Network Overlay (subtle) */}
-      <div className="absolute inset-0 neural-network-bg animate-matrix-grid opacity-10"></div>
+        <p
+          style={{
+            fontSize: 'var(--text-lg)',
+            color: 'var(--text-secondary)',
+            marginBottom: 'var(--space-6)',
+            maxWidth: '36rem',
+            marginInline: 'auto',
+          }}
+        >
+          Generative AI · Agentic Workflows · Production Backend APIs
+        </p>
 
-      {/* Animated accent overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10 animate-gradient-flow"></div>
-
-      {/* Floating Data Streams */}
-      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-primary/40 to-transparent animate-data-stream"></div>
-      <div className="absolute top-0 right-1/3 w-px h-full bg-gradient-to-b from-transparent via-accent/40 to-transparent animate-data-stream" style={{ animationDelay: "1s" }}></div>
-
-      {/* Enhanced floating graphics and shapes */}
-      <div className="absolute inset-0">
-        {/* Animated particles */}
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={`particle-${i}`}
-            className="absolute w-2 h-2 bg-primary/30 rounded-full animate-float"
-            style={{
-              left: `${15 + i * 12}%`,
-              top: `${25 + (i % 4) * 20}%`,
-              animationDelay: `${i * 0.3}s`,
-            }}
-          />
-        ))}
-
-        {/* Geometric shapes */}
-        <div className="absolute top-20 left-10 w-20 h-20 border-2 border-primary/20 rounded-full animate-pulse"></div>
-        <div className="absolute top-40 right-16 w-16 h-16 bg-accent/10 rounded-lg rotate-45 animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-32 left-1/4 w-12 h-12 border border-primary/30 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/3 right-1/4 w-8 h-8 bg-primary/20 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-
-        {/* Code-like decorative elements */}
-        <div className="absolute top-24 right-32 text-primary/20 text-6xl font-mono animate-pulse" style={{ animationDelay: '0.5s' }}>{'</>'}</div>
-        <div className="absolute bottom-24 left-32 text-accent/20 text-4xl font-mono animate-float" style={{ animationDelay: '2.5s' }}>{'{ }'}</div>
-
-        {/* Gradient orbs */}
-        <div className="absolute top-16 left-1/3 w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-xl animate-float" style={{ animationDelay: '1.2s' }}></div>
-        <div className="absolute bottom-20 right-1/3 w-24 h-24 bg-gradient-to-tr from-accent/10 to-primary/10 rounded-full blur-lg animate-float" style={{ animationDelay: '3s' }}></div>
-      </div>
-
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <div className="animate-fade-in-up">
-          {/* Name with Quantum Ripple */}
-          <div className="relative inline-block mb-6">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold">
-              <span className="block text-foreground">Navin</span>
-              <span className="block hero-text">Singh</span>
-            </h1>
-
-            {/* Quantum Ripple Effect */}
-            <div className="absolute inset-0 -z-10">
-              <div className="absolute top-1/2 left-1/2 w-6 h-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/30 animate-quantum-ripple"></div>
-              <div className="absolute top-1/2 left-1/2 w-6 h-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 animate-quantum-ripple" style={{ animationDelay: "1s" }}></div>
-            </div>
-          </div>
-
-          <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 animate-fade-in-up">
-            AI & Automation Developer | Machine Learning Engineer
-          </p>
-
-          <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-3xl mx-auto animate-fade-in-up">
-            Building intelligent AI systems and agentic solutions with <span className="text-primary font-semibold">Python</span>, <span className="text-primary font-semibold">JavaScript</span>, and cutting-edge frameworks.
-            Specializing in <span className="text-accent font-semibold">LLMs</span>, <span className="text-accent font-semibold">NLP</span>, <span className="text-accent font-semibold">TensorFlow</span>, <span className="text-accent font-semibold">LangChain</span>, and scalable machine learning automation.
-          </p>
-
-          {/* Download CV Button with Holographic Glow */}
-          <div className="flex justify-center mb-16 animate-scale-in">
-            <div className="relative group">
-              {/* Holographic glow */}
-              <div className="absolute -inset-2 holographic-gradient animate-holographic rounded-full blur-xl opacity-30 group-hover:opacity-60 transition-opacity duration-700"></div>
-
-              <Button
-                variant="outline"
-                size="lg"
-                className="relative glass-card border-border hover:border-primary text-foreground font-semibold px-8 py-3 rounded-full hover:scale-105 transition-all duration-500 hover:shadow-[0_0_40px_hsl(160_84%_60%_/_0.4)]"
-                onClick={() => {
-                  const link = document.createElement('a');
-                  link.href = '/Navin-Singh-CV.pdf';
-                  link.download = 'Navin-Singh-CV.pdf';
-                  document.body.appendChild(link);
-                  link.click();
-                  document.body.removeChild(link);
-                }}
-              >
-                <Download className="w-5 h-5 mr-2 group-hover:translate-y-1 transition-transform duration-300" />
-                Download CV
-              </Button>
-            </div>
-          </div>
-
-          {/* Enhanced Social Icons */}
-          <div className="flex justify-center gap-4 mb-16 animate-scale-in">
-            <a
-              href="https://github.com/Navin45"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 hover:scale-110 transition-all duration-300"
-              aria-label="GitHub"
-            >
-              <Github className="w-6 h-6 text-white" style={{ color: 'white', width: '24px', height: '24px' }} />
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/navin23/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-blue-500/30 hover:scale-110 transition-all duration-300"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-6 h-6 text-white" style={{ color: 'white', width: '24px', height: '24px' }} />
-            </a>
-
-            <a
-              href="mailto:navinsingh04523@gmail.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-primary/30 hover:scale-110 transition-all duration-300"
-              aria-label="Email"
-            >
-              <Mail className="w-6 h-6 text-white" style={{ color: 'white', width: '24px', height: '24px' }} />
-            </a>
-          </div>
-        </div>
-
-        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 animate-bounce">
+        {/* Resume actions */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 'var(--space-3)',
+            marginBottom: 'var(--space-8)',
+          }}
+        >
           <a
-            href="#skills"
-            className="text-muted-foreground hover:text-primary transition-all duration-300 group"
+            href="/Navin_resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary"
           >
-            <div className="relative">
-              <ArrowDown
-                size={32}
-                className="animate-bounce group-hover:scale-110 transition-all duration-300"
-              />
-              <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping opacity-75"></div>
-            </div>
+            <FileText size={18} aria-hidden="true" />
+            View Resume
+          </a>
+          <a
+            href="/Navin_resume.pdf"
+            download="Navin_Singh_Resume.pdf"
+            className="btn-outline"
+          >
+            <Download size={18} aria-hidden="true" />
+            Download Resume
           </a>
         </div>
+
+        {/* Contact links */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 'var(--space-3)',
+            marginBottom: 'var(--space-8)',
+          }}
+        >
+          <a
+            href="https://github.com/Navin45"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="social-link"
+            aria-label="GitHub"
+          >
+            <Github size={20} aria-hidden="true" />
+          </a>
+          <a
+            href="mailto:navinsingh04523@gmail.com"
+            className="social-link"
+            aria-label="Email"
+          >
+            <Mail size={20} aria-hidden="true" />
+          </a>
+        </div>
+
+        {/* Hero motion graphic */}
+        <HeroGraphic />
+
+        {/* Scroll hint */}
+        <a
+          href="#projects"
+          style={{
+            display: 'inline-flex',
+            marginTop: 'var(--space-6)',
+            color: 'var(--text-muted)',
+            transition: `color var(--duration-fast) var(--easing-default)`,
+          }}
+          aria-label="Scroll to projects"
+        >
+          <ArrowDown size={24} />
+        </a>
       </div>
     </section>
   );
