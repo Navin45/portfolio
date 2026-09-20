@@ -1,0 +1,60 @@
+{
+  "syncedAt": "2026-09-19T23:55:04.560Z",
+  "projectMatches": {
+    "PFL Finance WhatsApp KPI Accountability Bot": null,
+    "SonoLabs AI Audio SaaS Backend": null,
+    "GCOS Cloud & Workflow Infrastructure": null,
+    "Stancold Document Scanner": null,
+    "LeadBoxer n8n Community Node": null
+  },
+  "moreRepos": [
+    {
+      "name": "portfolio",
+      "url": "https://github.com/Navin45/portfolio",
+      "description": "",
+      "language": "TypeScript",
+      "stars": 0,
+      "pushedAt": "2026-09-19T23:44:16Z"
+    },
+    {
+      "name": "tiny-gpt",
+      "url": "https://github.com/Navin45/tiny-gpt",
+      "description": "",
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-09-18T06:10:48Z"
+    },
+    {
+      "name": "bytebuddhi",
+      "url": "https://github.com/Navin45/bytebuddhi",
+      "description": "",
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-09-14T11:09:39Z"
+    },
+    {
+      "name": "Finance-mcp",
+      "url": "https://github.com/Navin45/Finance-mcp",
+      "description": "",
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2026-09-03T11:29:21Z"
+    },
+    {
+      "name": "memori-graph-chatbot",
+      "url": "https://github.com/Navin45/memori-graph-chatbot",
+      "description": "",
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2025-09-16T14:05:46Z"
+    },
+    {
+      "name": "AI-Chatbot",
+      "url": "https://github.com/Navin45/AI-Chatbot",
+      "description": "",
+      "language": "Python",
+      "stars": 0,
+      "pushedAt": "2025-06-01T14:24:16Z"
+    }
+  ]
+}
