@@ -1,172 +1,199 @@
 import { useState, useMemo } from 'react';
 import { m } from 'motion/react';
 import { useScrollSync } from '@/hooks/use-scroll-sync';
-import { Activity, Cpu, Sparkles, Database, Layers, Network, ShieldCheck, Terminal } from 'lucide-react';
 
 interface PipelineNode {
   id: string;
   label: string;
-  stage: string;
   sublabel: string;
+  stageNum: string;
+  stageName: string;
   x: number; // center x
   y: number; // center y
   width: number;
   height: number;
   telemetry: string;
-  metrics: string;
+  tech: string;
   statusColor: string;
-  iconName: string;
 }
 
 interface PipelineEdge {
   id: string;
   from: string;
   to: string;
-  curve: string; // SVG path
+  curve: string;
 }
 
-// 4 Architectural Stages
-const STAGES = [
-  { id: 'stage-1', name: '01 // INGESTION', x: 110 },
-  { id: 'stage-2', name: '02 // REASONING', x: 310 },
-  { id: 'stage-3', name: '03 // BACKEND',   x: 510 },
-  { id: 'stage-4', name: '04 // RUNTIME',   x: 710 },
+interface StageHeader {
+  num: string;
+  name: string;
+  x: number;
+  id: string;
+}
+
+// 4 distinct architecture stages covering Navin's entire AI Engineering expertise
+const STAGE_HEADERS: StageHeader[] = [
+  { num: '01', name: 'INGEST & RAG', x: 115, id: 'stage-1' },
+  { num: '02', name: 'AGENT FLOWS', x: 305, id: 'stage-2' },
+  { num: '03', name: 'API & PROTOCOL', x: 495, id: 'stage-3' },
+  { num: '04', name: 'STORAGE & CLOUD', x: 685, id: 'stage-4' },
 ];
 
+// 8 comprehensive pipeline nodes strictly matching resume skills and architecture
 const NODES: PipelineNode[] = [
-  // Stage 1: Ingestion & Retrieval
+  // Stage 1: Ingestion & RAG
   {
     id: 'ingest',
-    label: 'Data Ingestion',
-    stage: 'STAGE 01',
-    sublabel: 'Webhooks & APIs',
-    x: 110,
-    y: 95,
-    width: 148,
-    height: 54,
-    telemetry: 'Multi-Tenant Ingestion • Real-Time Stream',
-    metrics: '5.2k req/s • 0.01% err',
+    label: 'Data Ingest',
+    sublabel: 'Webhooks & Pandas',
+    stageNum: '01',
+    stageName: 'INGEST & RAG',
+    x: 115,
+    y: 105,
+    width: 152,
+    height: 46,
+    telemetry: 'Multi-Source Document & API Stream Ingestion',
+    tech: 'pdfplumber • openpyxl • Pandas • Webhooks',
     statusColor: '#38bdf8', // cyan
-    iconName: 'Network',
   },
   {
     id: 'rag',
     label: 'RAG Retrieval',
-    stage: 'STAGE 01',
-    sublabel: 'Vector Search',
-    x: 110,
+    sublabel: 'Hybrid Vector Search',
+    stageNum: '01',
+    stageName: 'INGEST & RAG',
+    x: 115,
     y: 235,
-    width: 148,
-    height: 54,
-    telemetry: 'Hybrid Reranking • Semantic Search',
-    metrics: '1536 dim • 18ms latency',
+    width: 152,
+    height: 46,
+    telemetry: 'Semantic Chunking & Re-ranking Pipeline',
+    tech: 'RAG Pipelines • Vector Search • Embeddings',
     statusColor: '#10b981', // emerald
-    iconName: 'Layers',
   },
 
-  // Stage 2: Reasoning & Multi-Agent
+  // Stage 2: Agentic Orchestration
   {
     id: 'langgraph',
     label: 'LangGraph Flow',
-    stage: 'STAGE 02',
-    sublabel: 'Agentic StateGraph',
-    x: 310,
-    y: 95,
-    width: 148,
-    height: 54,
-    telemetry: 'Multi-Agent StateFlow • Cyclic Routing',
-    metrics: '4 Agents • 100% Deterministic',
+    sublabel: 'Cyclic StateGraph',
+    stageNum: '02',
+    stageName: 'AGENT FLOWS',
+    x: 305,
+    y: 105,
+    width: 152,
+    height: 46,
+    telemetry: 'Multi-Agent Dynamic Routing & Checkpointing',
+    tech: 'LangGraph • LangChain • Hermes Agent',
     statusColor: '#c084fc', // purple
-    iconName: 'Cpu',
   },
   {
     id: 'claude',
-    label: 'Claude API',
-    stage: 'STAGE 02',
-    sublabel: 'Structured Output',
-    x: 310,
+    label: 'Claude & Gemini',
+    sublabel: 'Tool Calling & LLMs',
+    stageNum: '02',
+    stageName: 'AGENT FLOWS',
+    x: 305,
     y: 235,
-    width: 148,
-    height: 54,
-    telemetry: 'Tool Calling • JSON Schema Validation',
-    metrics: '94 tokens/s • 99.8% precision',
+    width: 152,
+    height: 46,
+    telemetry: 'Structured JSON Schemas & Function Execution',
+    tech: 'Claude API • Gemini API • PyTorch • LoRA',
     statusColor: '#c084fc',
-    iconName: 'Sparkles',
   },
 
-  // Stage 3: Services & Data Persistence
+  // Stage 3: Backend & Protocols
   {
     id: 'fastapi',
-    label: 'FastAPI Backend',
-    stage: 'STAGE 03',
+    label: 'FastAPI Service',
     sublabel: 'Clean Architecture',
-    x: 510,
-    y: 95,
-    width: 148,
-    height: 54,
-    telemetry: 'Domain Entity Layer • Dependency Injection',
-    metrics: 'AsyncIO • < 12ms P95',
+    stageNum: '03',
+    stageName: 'API & PROTOCOL',
+    x: 495,
+    y: 105,
+    width: 152,
+    height: 46,
+    telemetry: 'Async High-Throughput Domain Services',
+    tech: 'FastAPI • Python • TypeScript • REST',
     statusColor: '#10b981',
-    iconName: 'Activity',
   },
-  {
-    id: 'postgres',
-    label: 'PostgreSQL DB',
-    stage: 'STAGE 03',
-    sublabel: 'SQLAlchemy & Vector',
-    x: 510,
-    y: 235,
-    width: 148,
-    height: 54,
-    telemetry: 'PgBouncer Pool • Row-Level Security',
-    metrics: 'ACID • pgvector indexing',
-    statusColor: '#38bdf8',
-    iconName: 'Database',
-  },
-
-  // Stage 4: Protocol & Infrastructure
   {
     id: 'mcp',
     label: 'MCP Protocol',
-    stage: 'STAGE 04',
-    sublabel: 'Context Server',
-    x: 710,
-    y: 95,
-    width: 148,
-    height: 54,
-    telemetry: 'Model Context Protocol Server • Tool Bus',
-    metrics: 'Standard Spec • JSON-RPC',
+    sublabel: 'Context Server Bus',
+    stageNum: '03',
+    stageName: 'API & PROTOCOL',
+    x: 495,
+    y: 235,
+    width: 152,
+    height: 46,
+    telemetry: 'Model Context Protocol Client & Server Tools',
+    tech: 'MCP • Tool Calling • n8n Workflows',
     statusColor: '#f59e0b', // amber
-    iconName: 'Terminal',
+  },
+
+  // Stage 4: Storage & Cloud Infrastructure
+  {
+    id: 'postgres',
+    label: 'PostgreSQL DB',
+    sublabel: 'SQLAlchemy & Cache',
+    stageNum: '04',
+    stageName: 'STORAGE & CLOUD',
+    x: 685,
+    y: 105,
+    width: 152,
+    height: 46,
+    telemetry: 'Relational ACID Store & Vector Indexing',
+    tech: 'PostgreSQL • SQLAlchemy • Redis • Supabase',
+    statusColor: '#38bdf8',
   },
   {
     id: 'docker',
     label: 'Docker & CI/CD',
-    stage: 'STAGE 04',
     sublabel: 'Cloud Deployment',
-    x: 710,
+    stageNum: '04',
+    stageName: 'STORAGE & CLOUD',
+    x: 685,
     y: 235,
-    width: 148,
-    height: 54,
-    telemetry: 'GitHub Actions • Containerized Runtime',
-    metrics: 'Multi-Arch • Auto-healing',
+    width: 152,
+    height: 46,
+    telemetry: 'Automated Build, Test & Deployment Clusters',
+    tech: 'Docker • GitHub Actions • AWS • GCP',
     statusColor: '#10b981',
-    iconName: 'ShieldCheck',
   },
 ];
 
-// Meaningful architectural connections
+// Complete DAG circuit connectivity: intra-stage and inter-stage
+// Node width = 152 (half-width = 76). Row 1 y = 105 (half-height = 23), Row 2 y = 235.
 const EDGES: PipelineEdge[] = [
-  { id: 'e1', from: 'ingest', to: 'rag', curve: 'M 110 122 L 110 208' },
-  { id: 'e2', from: 'ingest', to: 'langgraph', curve: 'M 184 95 C 215 95, 205 95, 236 95' },
-  { id: 'e3', from: 'rag', to: 'langgraph', curve: 'M 184 235 C 215 235, 205 95, 236 95' },
-  { id: 'e4', from: 'langgraph', to: 'claude', curve: 'M 310 122 L 310 208' },
-  { id: 'e5', from: 'langgraph', to: 'fastapi', curve: 'M 384 95 C 415 95, 405 95, 436 95' },
-  { id: 'e6', from: 'claude', to: 'fastapi', curve: 'M 384 235 C 415 235, 405 95, 436 95' },
-  { id: 'e7', from: 'fastapi', to: 'postgres', curve: 'M 510 122 L 510 208' },
-  { id: 'e8', from: 'fastapi', to: 'mcp', curve: 'M 584 95 C 615 95, 605 95, 636 95' },
-  { id: 'e9', from: 'postgres', to: 'docker', curve: 'M 584 235 C 615 235, 605 235, 636 235' },
-  { id: 'e10', from: 'mcp', to: 'docker', curve: 'M 710 122 L 710 208' },
+  // Stage 1 intra-stage
+  { id: 'e-in-rag', from: 'ingest', to: 'rag', curve: 'M 115 128 L 115 212' },
+
+  // Stage 1 -> Stage 2 connections
+  { id: 'e1', from: 'ingest', to: 'langgraph', curve: 'M 191 105 L 229 105' },
+  { id: 'e2', from: 'ingest', to: 'claude', curve: 'M 191 105 C 210 105, 210 235, 229 235' },
+  { id: 'e3', from: 'rag', to: 'langgraph', curve: 'M 191 235 C 210 235, 210 105, 229 105' },
+  { id: 'e4', from: 'rag', to: 'claude', curve: 'M 191 235 L 229 235' },
+
+  // Stage 2 intra-stage
+  { id: 'e-lg-cl', from: 'langgraph', to: 'claude', curve: 'M 305 128 L 305 212' },
+
+  // Stage 2 -> Stage 3 connections
+  { id: 'e5', from: 'langgraph', to: 'fastapi', curve: 'M 381 105 L 419 105' },
+  { id: 'e6', from: 'langgraph', to: 'mcp', curve: 'M 381 105 C 400 105, 400 235, 419 235' },
+  { id: 'e7', from: 'claude', to: 'fastapi', curve: 'M 381 235 C 400 235, 400 105, 419 105' },
+  { id: 'e8', from: 'claude', to: 'mcp', curve: 'M 381 235 L 419 235' },
+
+  // Stage 3 intra-stage
+  { id: 'e-fa-mcp', from: 'fastapi', to: 'mcp', curve: 'M 495 128 L 495 212' },
+
+  // Stage 3 -> Stage 4 connections
+  { id: 'e9', from: 'fastapi', to: 'postgres', curve: 'M 571 105 L 609 105' },
+  { id: 'e10', from: 'fastapi', to: 'docker', curve: 'M 571 105 C 590 105, 590 235, 609 235' },
+  { id: 'e11', from: 'mcp', to: 'postgres', curve: 'M 571 235 C 590 235, 590 105, 609 105' },
+  { id: 'e12', from: 'mcp', to: 'docker', curve: 'M 571 235 L 609 235' },
+
+  // Stage 4 intra-stage
+  { id: 'e-pg-doc', from: 'postgres', to: 'docker', curve: 'M 685 128 L 685 212' },
 ];
 
 const SECTION_HIGHLIGHTS: Record<string, string[]> = {
@@ -180,6 +207,7 @@ const SECTION_HIGHLIGHTS: Record<string, string[]> = {
 export default function HeroGraphic() {
   const { activeSection } = useScrollSync();
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [hoveredStage, setHoveredStage] = useState<string | null>(null);
 
   const activeNodes = SECTION_HIGHLIGHTS[activeSection] || SECTION_HIGHLIGHTS.hero;
 
@@ -189,16 +217,16 @@ export default function HeroGraphic() {
     return m;
   }, []);
 
-  // Ambient organic float offsets
+  // Ambient organic float offsets for each node
   const floatOffsets = [
-    { y: [-3.5, 3.5, -3.5], duration: 4.2 },
-    { y: [3, -3.5, 3], duration: 4.8 },
-    { y: [-4, 2.5, -4], duration: 5.1 },
-    { y: [2.5, -4, 2.5], duration: 4.5 },
-    { y: [-3, 3, -3], duration: 4.9 },
-    { y: [3.5, -2.5, 3.5], duration: 5.3 },
-    { y: [-2.5, 3, -2.5], duration: 4.6 },
-    { y: [3, -2.5, 3], duration: 5.0 },
+    { y: [-3, 3, -3], duration: 4.4 },
+    { y: [3, -3, 3], duration: 5.0 },
+    { y: [-3.5, 2.5, -3.5], duration: 5.2 },
+    { y: [2.5, -3.5, 2.5], duration: 4.6 },
+    { y: [-3, 3, -3], duration: 4.8 },
+    { y: [3, -2.5, 3], duration: 5.4 },
+    { y: [-2.5, 3, -2.5], duration: 4.7 },
+    { y: [3, -2.5, 3], duration: 5.1 },
   ];
 
   const activeNodeData = hoveredNode ? nodeMap.get(hoveredNode) : null;
@@ -208,332 +236,275 @@ export default function HeroGraphic() {
       aria-hidden="true"
       className="w-full flex flex-col items-center justify-center relative select-none"
     >
-      {/* Ambient background glow behind the panel */}
-      <div className="absolute -inset-4 bg-gradient-to-r from-[#a855f7]/15 via-[#38bdf8]/10 to-[#10b981]/15 rounded-3xl blur-2xl opacity-60 pointer-events-none" />
+      {/* Subtle ambient light glow behind the floating pipeline */}
+      <div className="absolute inset-0 bg-gradient-to-r from-[#a855f7]/12 via-[#38bdf8]/8 to-[#10b981]/12 rounded-full blur-3xl opacity-60 pointer-events-none" />
 
-      {/* Glassmorphic Cybernetic Terminal Panel */}
-      <div className="w-full max-w-[840px] rounded-2xl p-[1px] bg-gradient-to-b from-white/20 via-[#a855f7]/30 to-white/5 shadow-[0_0_50px_-10px_rgba(168,85,247,0.3)] relative z-10 backdrop-blur-xl">
-        <div className="w-full bg-[#0d0d12]/95 rounded-2xl overflow-hidden border border-white/5">
-          {/* Cybernetic Window Header */}
-          <div className="w-full px-4 py-3 bg-[#13131a]/90 border-b border-white/5 flex items-center justify-between text-[11px] font-mono">
-            {/* Terminal Window Controls & Title */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444]/80 inline-block shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]/80 inline-block shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#10b981]/80 inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-              </div>
-              <div className="flex items-center gap-2 pl-2 border-l border-white/10">
-                <span className="text-[#c084fc] font-semibold">// LIVE PIPELINE DAG</span>
-                <span className="text-[var(--text-muted)] text-[10px] hidden sm:inline">v2.6_ACTIVE</span>
-              </div>
-            </div>
+      {/* Floating Canvas */}
+      <div className="w-full max-w-[800px] aspect-[800/310] relative">
+        <svg
+          viewBox="0 0 800 310"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+          style={{ overflow: 'visible' }}
+        >
+          <defs>
+            {/* Luminous node glow filter */}
+            <filter id="pipeline-glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
 
-            {/* Real-time system telemetry metrics */}
-            <div className="flex items-center gap-4 text-[10px]">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse" />
-                <span className="text-[#a3a3a3]">LATENCY:</span>
-                <span className="text-white font-semibold">12ms</span>
-              </div>
-              <div className="hidden sm:flex items-center gap-1.5">
-                <span className="text-[#a3a3a3]">THROUGHPUT:</span>
-                <span className="text-[#38bdf8] font-semibold">5.2k req/s</span>
-              </div>
-              <div className="hidden md:flex items-center gap-1.5">
-                <span className="text-[#a3a3a3]">STATUS:</span>
-                <span className="text-[#10b981] font-semibold">OPTIMAL</span>
-              </div>
-            </div>
-          </div>
+            {/* Edge pulse gradient for active flows */}
+            <linearGradient id="edgeFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#a855f7" stopOpacity="0.5" />
+              <stop offset="50%" stopColor="#c084fc" stopOpacity="1" />
+              <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.5" />
+            </linearGradient>
 
-          {/* Main SVG Pipeline Canvas */}
-          <div className="w-full aspect-[820/340] relative p-2 sm:p-4">
-            <svg
-              viewBox="0 0 820 330"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-full"
-              style={{ overflow: 'visible' }}
-            >
-              <defs>
-                {/* Cyber Grid Pattern */}
-                <pattern id="cyber-grid" width="28" height="28" patternUnits="userSpaceOnUse">
-                  <path d="M 28 0 L 0 0 0 28" fill="none" stroke="rgba(255, 255, 255, 0.03)" strokeWidth="1" />
-                </pattern>
+            {/* High-contrast pill backgrounds */}
+            <linearGradient id="pillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#18181f" />
+              <stop offset="100%" stopColor="#0e0e13" />
+            </linearGradient>
+            <linearGradient id="pillActiveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#251e33" />
+              <stop offset="100%" stopColor="#14111d" />
+            </linearGradient>
+          </defs>
 
-                {/* Ambient node glow */}
-                <filter id="node-glow" x="-30%" y="-30%" width="160%" height="160%">
-                  <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
+          {/* Stage Column Headers at the top of the canvas */}
+          {STAGE_HEADERS.map((stg) => {
+            const isStageHovered = hoveredStage === stg.id;
+            return (
+              <g
+                key={stg.id}
+                onMouseEnter={() => setHoveredStage(stg.id)}
+                onMouseLeave={() => setHoveredStage(null)}
+                className="cursor-pointer"
+              >
+                <text
+                  x={stg.x}
+                  y={24}
+                  fill={isStageHovered ? '#c084fc' : '#737385'}
+                  fontSize="9.5"
+                  fontWeight="600"
+                  fontFamily="var(--font-mono)"
+                  letterSpacing="0.08em"
+                  textAnchor="middle"
+                  className="transition-colors duration-150"
+                >
+                  {stg.num} // {stg.name}
+                </text>
+                <line
+                  x1={stg.x - 48}
+                  y1={34}
+                  x2={stg.x + 48}
+                  y2={34}
+                  stroke={isStageHovered ? '#a855f7' : '#272732'}
+                  strokeWidth="1"
+                  strokeDasharray="2 2"
+                />
+              </g>
+            );
+          })}
 
-                {/* Laser scan beam gradient */}
-                <linearGradient id="scannerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#a855f7" stopOpacity="0" />
-                  <stop offset="50%" stopColor="#c084fc" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#38bdf8" stopOpacity="0" />
-                </linearGradient>
+          {/* Connected Curved Pipeline Circuits */}
+          {EDGES.map((edge, idx) => {
+            const isConnectedToHover =
+              hoveredNode === edge.from || hoveredNode === edge.to;
+            const isBothActive =
+              activeNodes.includes(edge.from) && activeNodes.includes(edge.to);
+            const isHighlighted = isConnectedToHover || isBothActive;
 
-                {/* Edge active gradient */}
-                <linearGradient id="edgeFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#a855f7" stopOpacity="0.5" />
-                  <stop offset="50%" stopColor="#c084fc" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.5" />
-                </linearGradient>
+            // When a node is hovered, dim down unrelated edges to create a laser-focus spotlight
+            const isDimmed = hoveredNode !== null && !isConnectedToHover;
 
-                {/* Capsule fills with subtle specular gradient */}
-                <linearGradient id="capsuleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#22222e" />
-                  <stop offset="100%" stopColor="#121218" />
-                </linearGradient>
-                <linearGradient id="capsuleActiveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stopColor="#2e253e" />
-                  <stop offset="100%" stopColor="#191524" />
-                </linearGradient>
-              </defs>
+            return (
+              <g key={edge.id}>
+                {/* Background circuit track */}
+                <path
+                  d={edge.curve}
+                  stroke={isDimmed ? '#16161c' : '#22222a'}
+                  strokeWidth="2"
+                  fill="none"
+                />
 
-              {/* Background Grid Pattern */}
-              <rect x="0" y="0" width="820" height="330" fill="url(#cyber-grid)" />
+                {/* Animated illuminated circuit line */}
+                <path
+                  d={edge.curve}
+                  stroke={isHighlighted ? 'url(#edgeFlowGradient)' : '#333340'}
+                  strokeWidth={isHighlighted ? 2.5 : 1.5}
+                  strokeDasharray={isHighlighted ? '8 6' : 'none'}
+                  fill="none"
+                  opacity={isDimmed ? 0.12 : isHighlighted ? 0.95 : 0.4}
+                  style={
+                    isHighlighted
+                      ? {
+                          animation: 'marquee-scroll 7s linear infinite',
+                        }
+                      : undefined
+                  }
+                />
 
-              {/* Animated Luminous Vertical Scanner Line */}
-              <m.line
-                x1="0"
-                y1="30"
-                x2="0"
-                y2="310"
-                stroke="url(#scannerGradient)"
-                strokeWidth="2"
-                strokeDasharray="4 2"
+                {/* Flowing luminous data packet along active edges */}
+                {isHighlighted && !isDimmed && (
+                  <circle r="3.5" fill="#c084fc" filter="url(#pipeline-glow)">
+                    <animateMotion
+                      dur={`${2 + (idx % 4) * 0.35}s`}
+                      repeatCount="indefinite"
+                      path={edge.curve}
+                    />
+                  </circle>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Pipeline Node Pills */}
+          {NODES.map((node, idx) => {
+            const isHovered = hoveredNode === node.id;
+            const isActive = activeNodes.includes(node.id);
+            const isStageActive = hoveredStage === `stage-${node.stageNum.replace(/^0/, '')}`;
+            const floatCfg = floatOffsets[idx % floatOffsets.length];
+
+            const left = node.x - node.width / 2;
+            const top = node.y - node.height / 2;
+
+            return (
+              <m.g
+                key={node.id}
+                onMouseEnter={() => setHoveredNode(node.id)}
+                onMouseLeave={() => setHoveredNode(null)}
+                className="cursor-pointer"
                 animate={{
-                  x: [0, 820, 0],
+                  y: floatCfg.y,
+                  scale: isHovered ? 1.05 : 1,
                 }}
                 transition={{
-                  duration: 10,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
+                  y: {
+                    duration: floatCfg.duration,
+                    repeat: Infinity,
+                    ease: 'easeInOut',
+                  },
+                  scale: {
+                    duration: 0.2,
+                    ease: [0.16, 1, 0.3, 1],
+                  },
                 }}
-              />
-
-              {/* Stage Column Backdrop Guides */}
-              {STAGES.map((stg) => (
-                <g key={stg.id}>
-                  <line
-                    x1={stg.x}
-                    y1={30}
-                    x2={stg.x}
-                    y2={305}
-                    stroke="rgba(255, 255, 255, 0.05)"
-                    strokeWidth="1"
-                    strokeDasharray="4 6"
-                  />
-                  <text
-                    x={stg.x}
-                    y={22}
-                    fill="#888899"
-                    fontSize="10"
-                    fontWeight="600"
-                    fontFamily="var(--font-mono)"
-                    letterSpacing="0.08em"
-                    textAnchor="middle"
-                  >
-                    {stg.name}
-                  </text>
-                </g>
-              ))}
-
-              {/* Connected Curved Pipeline Circuits */}
-              {EDGES.map((edge, idx) => {
-                const isConnectedToHover =
-                  hoveredNode === edge.from || hoveredNode === edge.to;
-                const isBothActive =
-                  activeNodes.includes(edge.from) && activeNodes.includes(edge.to);
-                const isHighlighted = isConnectedToHover || isBothActive;
-
-                return (
-                  <g key={edge.id}>
-                    {/* Background circuit track */}
-                    <path
-                      d={edge.curve}
-                      stroke="#22222e"
-                      strokeWidth="2"
-                      fill="none"
-                    />
-
-                    {/* Illuminated circuit line */}
-                    <path
-                      d={edge.curve}
-                      stroke={isHighlighted ? 'url(#edgeFlowGradient)' : '#333344'}
-                      strokeWidth={isHighlighted ? 2.5 : 1.5}
-                      strokeDasharray={isHighlighted ? '8 6' : 'none'}
-                      fill="none"
-                      opacity={isHighlighted ? 0.95 : 0.45}
-                      style={
-                        isHighlighted
-                          ? {
-                              animation: 'marquee-scroll 8s linear infinite',
-                            }
-                          : undefined
-                      }
-                    />
-
-                    {/* Luminous flowing data particle packet with trailing glow */}
-                    {isHighlighted && (
-                      <circle r="4" fill="#c084fc" filter="url(#node-glow)">
-                        <animateMotion
-                          dur={`${2 + (idx % 4) * 0.35}s`}
-                          repeatCount="indefinite"
-                          path={edge.curve}
-                        />
-                      </circle>
-                    )}
-                  </g>
-                );
-              })}
-
-              {/* Pipeline Node Capsules */}
-              {NODES.map((node, idx) => {
-                const isHovered = hoveredNode === node.id;
-                const isActive = activeNodes.includes(node.id);
-                const floatCfg = floatOffsets[idx % floatOffsets.length];
-
-                const left = node.x - node.width / 2;
-                const top = node.y - node.height / 2;
-
-                return (
-                  <m.g
-                    key={node.id}
-                    onMouseEnter={() => setHoveredNode(node.id)}
-                    onMouseLeave={() => setHoveredNode(null)}
-                    className="cursor-pointer"
+              >
+                {/* Outer beacon pulse wave when active */}
+                {(isActive || isStageActive) && (
+                  <m.rect
+                    x={left - 5}
+                    y={top - 5}
+                    width={node.width + 10}
+                    height={node.height + 10}
+                    rx="26"
+                    ry="26"
+                    fill="none"
+                    stroke="#a855f7"
+                    strokeWidth="1.5"
                     animate={{
-                      y: floatCfg.y,
-                      scale: isHovered ? 1.05 : 1,
+                      scale: [1, 1.05, 1],
+                      opacity: [0.7, 0.15, 0.7],
                     }}
                     transition={{
-                      y: {
-                        duration: floatCfg.duration,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      },
-                      scale: {
-                        duration: 0.2,
-                        ease: [0.16, 1, 0.3, 1],
-                      },
+                      duration: 2.8,
+                      repeat: Infinity,
+                      ease: 'easeInOut',
                     }}
-                  >
-                    {/* Outer pulse beacon ring */}
-                    {isActive && (
-                      <m.rect
-                        x={left - 5}
-                        y={top - 5}
-                        width={node.width + 10}
-                        height={node.height + 10}
-                        rx="14"
-                        ry="14"
-                        fill="none"
-                        stroke="#a855f7"
-                        strokeWidth="1.5"
-                        animate={{
-                          scale: [1, 1.06, 1],
-                          opacity: [0.7, 0.15, 0.7],
-                        }}
-                        transition={{
-                          duration: 2.8,
-                          repeat: Infinity,
-                          ease: 'easeInOut',
-                        }}
-                      />
-                    )}
+                  />
+                )}
 
-                    {/* Main Capsule Body */}
-                    <rect
-                      x={left}
-                      y={top}
-                      width={node.width}
-                      height={node.height}
-                      rx="12"
-                      ry="12"
-                      fill={isActive || isHovered ? 'url(#capsuleActiveGrad)' : 'url(#capsuleGrad)'}
-                      stroke={isHovered ? '#c084fc' : isActive ? '#a855f7' : '#3a3a4c'}
-                      strokeWidth={isHovered ? 2.5 : isActive ? 2 : 1.5}
-                      filter={isHovered || isActive ? 'url(#node-glow)' : undefined}
-                    />
+                {/* Main Pill Body — sleek rounded capsule */}
+                <rect
+                  x={left}
+                  y={top}
+                  width={node.width}
+                  height={node.height}
+                  rx="23"
+                  ry="23"
+                  fill={isActive || isHovered || isStageActive ? 'url(#pillActiveGrad)' : 'url(#pillGrad)'}
+                  stroke={isHovered ? '#c084fc' : isActive || isStageActive ? '#a855f7' : '#33333d'}
+                  strokeWidth={isHovered ? 2.5 : isActive || isStageActive ? 2 : 1.5}
+                  filter={isHovered || isActive ? 'url(#pipeline-glow)' : undefined}
+                />
 
-                    {/* Status Beacon Dot */}
-                    <circle
-                      cx={left + 18}
-                      cy={node.y}
-                      r="4.5"
-                      fill={node.statusColor}
-                    />
-                    <circle
-                      cx={left + 18}
-                      cy={node.y}
-                      r="8"
-                      fill={node.statusColor}
-                      opacity="0.35"
-                      className="animate-pulse"
-                    />
+                {/* Status Beacon Dot */}
+                <circle
+                  cx={left + 20}
+                  cy={node.y}
+                  r="4.5"
+                  fill={node.statusColor}
+                />
+                <circle
+                  cx={left + 20}
+                  cy={node.y}
+                  r="7.5"
+                  fill={node.statusColor}
+                  opacity="0.35"
+                  className="animate-pulse"
+                />
 
-                    {/* Main Node Label */}
-                    <text
-                      x={left + 32}
-                      y={node.y - 5}
-                      fill={isHovered ? '#ffffff' : isActive ? '#fafafa' : '#e2e2ec'}
-                      fontSize="12.5"
-                      fontWeight="600"
-                      fontFamily="var(--font-mono)"
-                      letterSpacing="-0.02em"
-                      dominantBaseline="middle"
-                    >
-                      {node.label}
-                    </text>
+                {/* Main Node Label — generous width with zero clipping */}
+                <text
+                  x={left + 36}
+                  y={node.y - 4}
+                  fill={isHovered ? '#ffffff' : isActive ? '#fafafa' : '#e0e0ea'}
+                  fontSize="12"
+                  fontWeight="600"
+                  fontFamily="var(--font-mono)"
+                  letterSpacing="-0.02em"
+                  dominantBaseline="middle"
+                >
+                  {node.label}
+                </text>
 
-                    {/* Subtitle / Classification */}
-                    <text
-                      x={left + 32}
-                      y={node.y + 11}
-                      fill={isActive || isHovered ? '#c084fc' : '#888899'}
-                      fontSize="9.5"
-                      fontWeight="500"
-                      fontFamily="var(--font-mono)"
-                      letterSpacing="0.05em"
-                      dominantBaseline="middle"
-                    >
-                      {node.sublabel}
-                    </text>
-                  </m.g>
-                );
-              })}
-            </svg>
-          </div>
+                {/* Subtitle / Classification */}
+                <text
+                  x={left + 36}
+                  y={node.y + 10}
+                  fill={isActive || isHovered ? '#c084fc' : '#888899'}
+                  fontSize="9.5"
+                  fontWeight="500"
+                  fontFamily="var(--font-mono)"
+                  letterSpacing="0.03em"
+                  dominantBaseline="middle"
+                >
+                  {node.sublabel}
+                </text>
+              </m.g>
+            );
+          })}
+        </svg>
+      </div>
 
-          {/* Interactive Live Telemetry HUD Bar */}
-          <div className="w-full px-4 py-2.5 bg-[#101016] border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="text-[#c084fc] font-semibold">STAGE_TELEMETRY:</span>
-              {activeNodeData ? (
-                <span className="text-white font-medium">
-                  {activeNodeData.label} [{activeNodeData.stage}] — {activeNodeData.telemetry}
-                </span>
-              ) : (
-                <span className="text-[#888899]">
-                  Hover any stage to inspect live architecture &amp; real-time telemetry
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-3 shrink-0 text-[11px]">
-              {activeNodeData ? (
-                <span className="text-[#10b981] font-semibold">{activeNodeData.metrics}</span>
-              ) : (
-                <span className="text-[#888899]">PIPELINE HEALTH: 100%</span>
-              )}
-            </div>
-          </div>
+      {/* Floating Minimal Telemetry HUD Indicator */}
+      <div className="w-full max-w-[800px] mt-2 py-2 px-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono text-[var(--text-muted)] border-t border-[var(--border-subtle)]">
+        <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+          <span className="text-[var(--accent-subtle)] shrink-0">// PIPELINE:</span>
+          {activeNodeData ? (
+            <span className="text-[var(--text-primary)] font-semibold truncate">
+              {activeNodeData.label} [{activeNodeData.stageName}] — {activeNodeData.telemetry}
+            </span>
+          ) : (
+            <span className="truncate">
+              01. Ingestion &amp; RAG → 02. Agent Orchestration → 03. FastAPI &amp; MCP → 04. Cloud &amp; DB
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-3 shrink-0 text-[11px]">
+          {activeNodeData ? (
+            <span className="text-[#38bdf8] font-mono hidden md:inline">
+              Tech: {activeNodeData.tech}
+            </span>
+          ) : (
+            <span className="text-[#10b981] font-medium">● ACTIVE</span>
+          )}
         </div>
       </div>
     </div>
