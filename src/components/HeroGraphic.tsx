@@ -12,6 +12,7 @@ interface PipelineNode {
   y: number; // center y
   width: number;
   height: number;
+  realWorldProblem: string;
   telemetry: string;
   tech: string;
   statusColor: string;
@@ -27,122 +28,155 @@ interface PipelineEdge {
 interface StageHeader {
   num: string;
   name: string;
+  problem: string;
   x: number;
   id: string;
 }
 
-// 4 distinct architecture stages covering Navin's entire AI Engineering expertise
+// 4 distinct enterprise AI engineering stages solving real-world production challenges
 const STAGE_HEADERS: StageHeader[] = [
-  { num: '01', name: 'INGEST & RAG', x: 115, id: 'stage-1' },
-  { num: '02', name: 'AGENT FLOWS', x: 305, id: 'stage-2' },
-  { num: '03', name: 'API & PROTOCOL', x: 495, id: 'stage-3' },
-  { num: '04', name: 'STORAGE & CLOUD', x: 685, id: 'stage-4' },
+  {
+    num: '01',
+    name: 'INGEST & RAG',
+    problem: 'Unstructured Data & Zero-Hallucination Retrieval',
+    x: 110,
+    id: 'stage-1',
+  },
+  {
+    num: '02',
+    name: 'AGENTIC FLOWS',
+    problem: 'Multi-Agent Cyclic Reasoning & Reflection',
+    x: 318,
+    id: 'stage-2',
+  },
+  {
+    num: '03',
+    name: 'PROTOCOLS & API',
+    problem: 'Safe Tool Execution via MCP & Async Core',
+    x: 526,
+    id: 'stage-3',
+  },
+  {
+    num: '04',
+    name: 'STORAGE & CLOUD',
+    problem: 'ACID Persistence, Vector Index & CI/CD',
+    x: 734,
+    id: 'stage-4',
+  },
 ];
 
-// 8 comprehensive pipeline nodes strictly matching resume skills and architecture
+// 8 comprehensive pipeline nodes representing real-world enterprise AI solutions
+// Width = 164, Height = 48, rx = 10 (ample text room, zero clipping)
 const NODES: PipelineNode[] = [
-  // Stage 1: Ingestion & RAG
+  // Stage 1: Ingestion & Verification
   {
     id: 'ingest',
     label: 'Data Ingest',
-    sublabel: 'Webhooks & Pandas',
+    sublabel: 'PDFs & Webhooks',
     stageNum: '01',
-    stageName: 'INGEST & RAG',
-    x: 115,
-    y: 105,
-    width: 152,
-    height: 46,
-    telemetry: 'Multi-Source Document & API Stream Ingestion',
+    stageName: 'INGESTION',
+    x: 110,
+    y: 110,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Ingests messy enterprise PDFs, Excel sheets & live webhooks without data loss',
+    telemetry: 'Multi-Source Parsing • Automated Stream Intake',
     tech: 'pdfplumber • openpyxl • Pandas • Webhooks',
     statusColor: '#38bdf8', // cyan
   },
   {
     id: 'rag',
-    label: 'RAG Retrieval',
-    sublabel: 'Hybrid Vector Search',
+    label: 'Hybrid RAG',
+    sublabel: 'Vector & BM25',
     stageNum: '01',
-    stageName: 'INGEST & RAG',
-    x: 115,
-    y: 235,
-    width: 152,
-    height: 46,
-    telemetry: 'Semantic Chunking & Re-ranking Pipeline',
+    stageName: 'RETRIEVAL',
+    x: 110,
+    y: 240,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Eliminates LLM hallucinations by combining dense vectors with sparse reranking',
+    telemetry: 'Semantic Chunking • pgvector Re-ranking',
     tech: 'RAG Pipelines • Vector Search • Embeddings',
     statusColor: '#10b981', // emerald
   },
 
-  // Stage 2: Agentic Orchestration
+  // Stage 2: Agentic Reasoning & Guardrails
   {
     id: 'langgraph',
     label: 'LangGraph Flow',
-    sublabel: 'Cyclic StateGraph',
+    sublabel: 'Multi-Agent Flow',
     stageNum: '02',
-    stageName: 'AGENT FLOWS',
-    x: 305,
-    y: 105,
-    width: 152,
-    height: 46,
-    telemetry: 'Multi-Agent Dynamic Routing & Checkpointing',
+    stageName: 'ORCHESTRATION',
+    x: 318,
+    y: 110,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Orchestrates supervisor-worker agent loops with self-correction & reflection',
+    telemetry: 'Cyclic StateGraph • Dynamic Tool Routing',
     tech: 'LangGraph • LangChain • Hermes Agent',
     statusColor: '#c084fc', // purple
   },
   {
     id: 'claude',
     label: 'Claude & Gemini',
-    sublabel: 'Tool Calling & LLMs',
+    sublabel: 'Structured JSON',
     stageNum: '02',
-    stageName: 'AGENT FLOWS',
-    x: 305,
-    y: 235,
-    width: 152,
-    height: 46,
-    telemetry: 'Structured JSON Schemas & Function Execution',
+    stageName: 'FOUNDATION AI',
+    x: 318,
+    y: 240,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Enforces strict JSON schemas and tool execution for deterministic output',
+    telemetry: 'Tool Calling • Schema-Guided Inference',
     tech: 'Claude API • Gemini API • PyTorch • LoRA',
     statusColor: '#c084fc',
   },
 
-  // Stage 3: Backend & Protocols
+  // Stage 3: Protocols & Backend Execution
   {
     id: 'fastapi',
-    label: 'FastAPI Service',
-    sublabel: 'Clean Architecture',
+    label: 'FastAPI Backend',
+    sublabel: 'Domain Services',
     stageNum: '03',
-    stageName: 'API & PROTOCOL',
-    x: 495,
-    y: 105,
-    width: 152,
-    height: 46,
-    telemetry: 'Async High-Throughput Domain Services',
+    stageName: 'CORE BACKEND',
+    x: 526,
+    y: 110,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Delivers high-concurrency async endpoints with Clean Architecture separation',
+    telemetry: 'Dependency Injection • Async REST Services',
     tech: 'FastAPI • Python • TypeScript • REST',
     statusColor: '#10b981',
   },
   {
     id: 'mcp',
-    label: 'MCP Protocol',
-    sublabel: 'Context Server Bus',
+    label: 'MCP Tool Bus',
+    sublabel: 'Context Server',
     stageNum: '03',
-    stageName: 'API & PROTOCOL',
-    x: 495,
-    y: 235,
-    width: 152,
-    height: 46,
-    telemetry: 'Model Context Protocol Client & Server Tools',
-    tech: 'MCP • Tool Calling • n8n Workflows',
+    stageName: 'TOOL PROTOCOL',
+    x: 526,
+    y: 240,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Standardizes tool and resource access across enterprise services safely',
+    telemetry: 'Model Context Protocol • Tool Orchestration',
+    tech: 'Model Context Protocol • JSON-RPC • n8n',
     statusColor: '#f59e0b', // amber
   },
 
-  // Stage 4: Storage & Cloud Infrastructure
+  // Stage 4: Persistence & Production Scale
   {
     id: 'postgres',
     label: 'PostgreSQL DB',
-    sublabel: 'SQLAlchemy & Cache',
+    sublabel: 'pgvector & Cache',
     stageNum: '04',
-    stageName: 'STORAGE & CLOUD',
-    x: 685,
-    y: 105,
-    width: 152,
-    height: 46,
-    telemetry: 'Relational ACID Store & Vector Indexing',
+    stageName: 'PERSISTENCE',
+    x: 734,
+    y: 110,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Provides ACID transactional persistence, vector storage & Redis caching',
+    telemetry: 'Connection Pooling • Low-Latency Redis',
     tech: 'PostgreSQL • SQLAlchemy • Redis • Supabase',
     statusColor: '#38bdf8',
   },
@@ -151,49 +185,49 @@ const NODES: PipelineNode[] = [
     label: 'Docker & CI/CD',
     sublabel: 'Cloud Deployment',
     stageNum: '04',
-    stageName: 'STORAGE & CLOUD',
-    x: 685,
-    y: 235,
-    width: 152,
-    height: 46,
-    telemetry: 'Automated Build, Test & Deployment Clusters',
+    stageName: 'DEPLOYMENT',
+    x: 734,
+    y: 240,
+    width: 164,
+    height: 48,
+    realWorldProblem: 'Enables zero-downtime containerized deployment and automated test pipelines',
+    telemetry: 'Multi-Stage Builds • Cloud Orchestration',
     tech: 'Docker • GitHub Actions • AWS • GCP',
     statusColor: '#10b981',
   },
 ];
 
-// Complete DAG circuit connectivity: intra-stage and inter-stage
-// Node width = 152 (half-width = 76). Row 1 y = 105 (half-height = 23), Row 2 y = 235.
+// Complete DAG circuit connectivity: Col 1 (192) -> Col 2 (236) -> Col 3 (444) -> Col 4 (652)
 const EDGES: PipelineEdge[] = [
-  // Stage 1 intra-stage
-  { id: 'e-in-rag', from: 'ingest', to: 'rag', curve: 'M 115 128 L 115 212' },
+  // Stage 1 intra-stage vertical
+  { id: 'e-in-rag', from: 'ingest', to: 'rag', curve: 'M 110 134 L 110 216' },
 
   // Stage 1 -> Stage 2 connections
-  { id: 'e1', from: 'ingest', to: 'langgraph', curve: 'M 191 105 L 229 105' },
-  { id: 'e2', from: 'ingest', to: 'claude', curve: 'M 191 105 C 210 105, 210 235, 229 235' },
-  { id: 'e3', from: 'rag', to: 'langgraph', curve: 'M 191 235 C 210 235, 210 105, 229 105' },
-  { id: 'e4', from: 'rag', to: 'claude', curve: 'M 191 235 L 229 235' },
+  { id: 'e1', from: 'ingest', to: 'langgraph', curve: 'M 192 110 L 236 110' },
+  { id: 'e2', from: 'ingest', to: 'claude', curve: 'M 192 110 C 214 110, 214 240, 236 240' },
+  { id: 'e3', from: 'rag', to: 'langgraph', curve: 'M 192 240 C 214 240, 214 110, 236 110' },
+  { id: 'e4', from: 'rag', to: 'claude', curve: 'M 192 240 L 236 240' },
 
-  // Stage 2 intra-stage
-  { id: 'e-lg-cl', from: 'langgraph', to: 'claude', curve: 'M 305 128 L 305 212' },
+  // Stage 2 intra-stage vertical
+  { id: 'e-lg-cl', from: 'langgraph', to: 'claude', curve: 'M 318 134 L 318 216' },
 
   // Stage 2 -> Stage 3 connections
-  { id: 'e5', from: 'langgraph', to: 'fastapi', curve: 'M 381 105 L 419 105' },
-  { id: 'e6', from: 'langgraph', to: 'mcp', curve: 'M 381 105 C 400 105, 400 235, 419 235' },
-  { id: 'e7', from: 'claude', to: 'fastapi', curve: 'M 381 235 C 400 235, 400 105, 419 105' },
-  { id: 'e8', from: 'claude', to: 'mcp', curve: 'M 381 235 L 419 235' },
+  { id: 'e5', from: 'langgraph', to: 'fastapi', curve: 'M 400 110 L 444 110' },
+  { id: 'e6', from: 'langgraph', to: 'mcp', curve: 'M 400 110 C 422 110, 422 240, 444 240' },
+  { id: 'e7', from: 'claude', to: 'fastapi', curve: 'M 400 240 C 422 240, 422 110, 444 110' },
+  { id: 'e8', from: 'claude', to: 'mcp', curve: 'M 400 240 L 444 240' },
 
-  // Stage 3 intra-stage
-  { id: 'e-fa-mcp', from: 'fastapi', to: 'mcp', curve: 'M 495 128 L 495 212' },
+  // Stage 3 intra-stage vertical
+  { id: 'e-fa-mcp', from: 'fastapi', to: 'mcp', curve: 'M 526 134 L 526 216' },
 
   // Stage 3 -> Stage 4 connections
-  { id: 'e9', from: 'fastapi', to: 'postgres', curve: 'M 571 105 L 609 105' },
-  { id: 'e10', from: 'fastapi', to: 'docker', curve: 'M 571 105 C 590 105, 590 235, 609 235' },
-  { id: 'e11', from: 'mcp', to: 'postgres', curve: 'M 571 235 C 590 235, 590 105, 609 105' },
-  { id: 'e12', from: 'mcp', to: 'docker', curve: 'M 571 235 L 609 235' },
+  { id: 'e9', from: 'fastapi', to: 'postgres', curve: 'M 608 110 L 652 110' },
+  { id: 'e10', from: 'fastapi', to: 'docker', curve: 'M 608 110 C 630 110, 630 240, 652 240' },
+  { id: 'e11', from: 'mcp', to: 'postgres', curve: 'M 608 240 C 630 240, 630 110, 652 110' },
+  { id: 'e12', from: 'mcp', to: 'docker', curve: 'M 608 240 L 652 240' },
 
-  // Stage 4 intra-stage
-  { id: 'e-pg-doc', from: 'postgres', to: 'docker', curve: 'M 685 128 L 685 212' },
+  // Stage 4 intra-stage vertical
+  { id: 'e-pg-doc', from: 'postgres', to: 'docker', curve: 'M 734 134 L 734 216' },
 ];
 
 const SECTION_HIGHLIGHTS: Record<string, string[]> = {
@@ -219,14 +253,14 @@ export default function HeroGraphic() {
 
   // Ambient organic float offsets for each node
   const floatOffsets = [
-    { y: [-3, 3, -3], duration: 4.4 },
-    { y: [3, -3, 3], duration: 5.0 },
-    { y: [-3.5, 2.5, -3.5], duration: 5.2 },
-    { y: [2.5, -3.5, 2.5], duration: 4.6 },
-    { y: [-3, 3, -3], duration: 4.8 },
-    { y: [3, -2.5, 3], duration: 5.4 },
-    { y: [-2.5, 3, -2.5], duration: 4.7 },
-    { y: [3, -2.5, 3], duration: 5.1 },
+    { y: [-2.5, 2.5, -2.5], duration: 4.4 },
+    { y: [2.5, -2.5, 2.5], duration: 5.0 },
+    { y: [-3, 2, -3], duration: 5.2 },
+    { y: [2, -3, 2], duration: 4.6 },
+    { y: [-2.5, 2.5, -2.5], duration: 4.8 },
+    { y: [2.5, -2, 2.5], duration: 5.4 },
+    { y: [-2, 2.5, -2], duration: 4.7 },
+    { y: [2.5, -2, 2.5], duration: 5.1 },
   ];
 
   const activeNodeData = hoveredNode ? nodeMap.get(hoveredNode) : null;
@@ -237,12 +271,12 @@ export default function HeroGraphic() {
       className="w-full flex flex-col items-center justify-center relative select-none"
     >
       {/* Subtle ambient light glow behind the floating pipeline */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#a855f7]/12 via-[#38bdf8]/8 to-[#10b981]/12 rounded-full blur-3xl opacity-60 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#a855f7]/10 via-[#38bdf8]/6 to-[#10b981]/10 rounded-full blur-3xl opacity-60 pointer-events-none" />
 
       {/* Floating Canvas */}
-      <div className="w-full max-w-[800px] aspect-[800/310] relative">
+      <div className="w-full max-w-[840px] aspect-[840/320] relative">
         <svg
-          viewBox="0 0 800 310"
+          viewBox="0 0 840 320"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full"
@@ -250,7 +284,7 @@ export default function HeroGraphic() {
         >
           <defs>
             {/* Luminous node glow filter */}
-            <filter id="pipeline-glow" x="-40%" y="-40%" width="180%" height="180%">
+            <filter id="pipeline-glow" x="-30%" y="-30%" width="160%" height="160%">
               <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
@@ -265,14 +299,14 @@ export default function HeroGraphic() {
               <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.5" />
             </linearGradient>
 
-            {/* High-contrast pill backgrounds */}
-            <linearGradient id="pillGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#18181f" />
-              <stop offset="100%" stopColor="#0e0e13" />
+            {/* Card backgrounds with subtle depth */}
+            <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#181820" />
+              <stop offset="100%" stopColor="#0f0f14" />
             </linearGradient>
-            <linearGradient id="pillActiveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#251e33" />
-              <stop offset="100%" stopColor="#14111d" />
+            <linearGradient id="cardActiveGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#241e30" />
+              <stop offset="100%" stopColor="#14111c" />
             </linearGradient>
           </defs>
 
@@ -328,7 +362,7 @@ export default function HeroGraphic() {
                 {/* Background circuit track */}
                 <path
                   d={edge.curve}
-                  stroke={isDimmed ? '#16161c' : '#22222a'}
+                  stroke={isDimmed ? '#14141a' : '#22222a'}
                   strokeWidth="2"
                   fill="none"
                 />
@@ -344,7 +378,7 @@ export default function HeroGraphic() {
                   style={
                     isHighlighted
                       ? {
-                          animation: 'marquee-scroll 7s linear infinite',
+                          animation: 'circuit-pulse 2.2s linear infinite',
                         }
                       : undefined
                   }
@@ -364,7 +398,7 @@ export default function HeroGraphic() {
             );
           })}
 
-          {/* Pipeline Node Pills */}
+          {/* Pipeline Node Cards */}
           {NODES.map((node, idx) => {
             const isHovered = hoveredNode === node.id;
             const isActive = activeNodes.includes(node.id);
@@ -399,17 +433,17 @@ export default function HeroGraphic() {
                 {/* Outer beacon pulse wave when active */}
                 {(isActive || isStageActive) && (
                   <m.rect
-                    x={left - 5}
-                    y={top - 5}
-                    width={node.width + 10}
-                    height={node.height + 10}
-                    rx="26"
-                    ry="26"
+                    x={left - 4}
+                    y={top - 4}
+                    width={node.width + 8}
+                    height={node.height + 8}
+                    rx="14"
+                    ry="14"
                     fill="none"
                     stroke="#a855f7"
                     strokeWidth="1.5"
                     animate={{
-                      scale: [1, 1.05, 1],
+                      scale: [1, 1.04, 1],
                       opacity: [0.7, 0.15, 0.7],
                     }}
                     transition={{
@@ -420,15 +454,15 @@ export default function HeroGraphic() {
                   />
                 )}
 
-                {/* Main Pill Body — sleek rounded capsule */}
+                {/* Main Card Body — sleek rounded rectangle with rx=10 */}
                 <rect
                   x={left}
                   y={top}
                   width={node.width}
                   height={node.height}
-                  rx="23"
-                  ry="23"
-                  fill={isActive || isHovered || isStageActive ? 'url(#pillActiveGrad)' : 'url(#pillGrad)'}
+                  rx="10"
+                  ry="10"
+                  fill={isActive || isHovered || isStageActive ? 'url(#cardActiveGrad)' : 'url(#cardGrad)'}
                   stroke={isHovered ? '#c084fc' : isActive || isStageActive ? '#a855f7' : '#33333d'}
                   strokeWidth={isHovered ? 2.5 : isActive || isStageActive ? 2 : 1.5}
                   filter={isHovered || isActive ? 'url(#pipeline-glow)' : undefined}
@@ -436,23 +470,23 @@ export default function HeroGraphic() {
 
                 {/* Status Beacon Dot */}
                 <circle
-                  cx={left + 20}
+                  cx={left + 16}
                   cy={node.y}
-                  r="4.5"
+                  r="3.5"
                   fill={node.statusColor}
                 />
                 <circle
-                  cx={left + 20}
+                  cx={left + 16}
                   cy={node.y}
-                  r="7.5"
+                  r="6.5"
                   fill={node.statusColor}
                   opacity="0.35"
                   className="animate-pulse"
                 />
 
-                {/* Main Node Label — generous width with zero clipping */}
+                {/* Main Node Label — fits comfortably with generous margins */}
                 <text
-                  x={left + 36}
+                  x={left + 28}
                   y={node.y - 4}
                   fill={isHovered ? '#ffffff' : isActive ? '#fafafa' : '#e0e0ea'}
                   fontSize="12"
@@ -466,13 +500,13 @@ export default function HeroGraphic() {
 
                 {/* Subtitle / Classification */}
                 <text
-                  x={left + 36}
+                  x={left + 28}
                   y={node.y + 10}
                   fill={isActive || isHovered ? '#c084fc' : '#888899'}
-                  fontSize="9.5"
+                  fontSize="9"
                   fontWeight="500"
                   fontFamily="var(--font-mono)"
-                  letterSpacing="0.03em"
+                  letterSpacing="0.02em"
                   dominantBaseline="middle"
                 >
                   {node.sublabel}
@@ -483,27 +517,27 @@ export default function HeroGraphic() {
         </svg>
       </div>
 
-      {/* Floating Minimal Telemetry HUD Indicator */}
-      <div className="w-full max-w-[800px] mt-2 py-2 px-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono text-[var(--text-muted)] border-t border-[var(--border-subtle)]">
-        <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
-          <span className="text-[var(--accent-subtle)] shrink-0">// PIPELINE:</span>
+      {/* Floating Real-World Problem Telemetry HUD */}
+      <div className="w-full max-w-[840px] mt-2 py-2 px-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs font-mono text-[var(--text-muted)] border-t border-[var(--border-subtle)]">
+        <div className="flex items-center gap-2 overflow-hidden w-full sm:w-auto">
+          <span className="text-[var(--accent-subtle)] shrink-0">// PROBLEM SOLVED:</span>
           {activeNodeData ? (
-            <span className="text-[var(--text-primary)] font-semibold truncate">
-              {activeNodeData.label} [{activeNodeData.stageName}] — {activeNodeData.telemetry}
+            <span className="text-[var(--text-primary)] font-medium truncate">
+              <strong className="text-white font-semibold">{activeNodeData.label}</strong>: {activeNodeData.realWorldProblem}
             </span>
           ) : (
-            <span className="truncate">
-              01. Ingestion &amp; RAG → 02. Agent Orchestration → 03. FastAPI &amp; MCP → 04. Cloud &amp; DB
+            <span className="text-[var(--text-secondary)] truncate">
+              Hover any stage to inspect real-world enterprise problem &amp; tech solution
             </span>
           )}
         </div>
         <div className="flex items-center gap-3 shrink-0 text-[11px]">
           {activeNodeData ? (
             <span className="text-[#38bdf8] font-mono hidden md:inline">
-              Tech: {activeNodeData.tech}
+              Stack: {activeNodeData.tech}
             </span>
           ) : (
-            <span className="text-[#10b981] font-medium">● ACTIVE</span>
+            <span className="text-[#10b981] font-medium">● ENTERPRISE AI ACTIVE</span>
           )}
         </div>
       </div>

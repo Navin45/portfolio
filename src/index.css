@@ -224,6 +224,11 @@
   to { transform: translateX(0); }
 }
 
+@keyframes circuit-pulse {
+  from { stroke-dashoffset: 28; }
+  to { stroke-dashoffset: 0; }
+}
+
 /* Marquee Item - Typography, NOT a pill badge */
 .marquee-item {
   font-family: var(--font-mono);
