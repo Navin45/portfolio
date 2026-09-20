@@ -1,4 +1,4 @@
-import { ArrowUp, Github, Mail, FileText } from 'lucide-react';
+import { ArrowUp, Github, Mail } from 'lucide-react';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -28,7 +28,7 @@ export default function Footer() {
           <a
             href="https://github.com/Navin45"
             target="_blank"
-            rel="noopener noreferrer"
+            rel="me noopener noreferrer"
             className="hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5"
           >
             <Github size={14} aria-hidden="true" />
@@ -41,16 +41,6 @@ export default function Footer() {
           >
             <Mail size={14} aria-hidden="true" />
             <span>Email</span>
-          </a>
-
-          <a
-            href="/Navin_resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[var(--text-primary)] transition-colors inline-flex items-center gap-1.5"
-          >
-            <FileText size={14} aria-hidden="true" />
-            <span>Resume</span>
           </a>
 
           <button
@@ -66,7 +56,7 @@ export default function Footer() {
 
       <div className="editorial-container mt-8 pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-[11px] font-mono text-[var(--text-muted)]">
         <span>&copy; {currentYear} Navin Singh. All rights reserved.</span>
-        <span>Built with React, TypeScript & Motion</span>
+        <span>Built with React, TypeScript &amp; Motion</span>
       </div>
     </footer>
   );

@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/((?!assets/|Navin_resume\\.pdf|og-image\\.png|favicon\\.ico|robots\\.txt).*)",
+      "source": "/((?!assets/|Navin_resume\\.pdf|og-image\\.png|favicon\\.ico|robots\\.txt|sitemap\\.xml).*)",
       "destination": "/index.html"
     }
   ],
@@ -37,6 +37,15 @@
         {
           "key": "Content-Disposition",
           "value": "inline; filename=\"Navin_resume.pdf\""
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
         }
       ]
     }

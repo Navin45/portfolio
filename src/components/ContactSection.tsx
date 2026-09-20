@@ -1,5 +1,5 @@
 import { m } from 'motion/react';
-import { Mail, Github, FileText, Download } from 'lucide-react';
+import { Mail, Github } from 'lucide-react';
 
 export default function ContactSection() {
   return (
@@ -35,30 +35,11 @@ export default function ContactSection() {
             <a
               href="https://github.com/Navin45"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="me noopener noreferrer"
               className="btn-editorial-secondary"
             >
               <Github size={16} aria-hidden="true" />
               <span>GitHub / Navin45</span>
-            </a>
-
-            <a
-              href="/Navin_resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-editorial-secondary"
-            >
-              <FileText size={16} aria-hidden="true" />
-              <span>View Resume</span>
-            </a>
-
-            <a
-              href="/Navin_resume.pdf"
-              download="Navin_Singh_Resume.pdf"
-              className="btn-editorial-secondary"
-            >
-              <Download size={16} aria-hidden="true" />
-              <span>Download PDF</span>
             </a>
           </div>
         </m.div>

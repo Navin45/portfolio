@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { m, useScroll, useTransform } from 'motion/react';
 import HeroGraphic from './HeroGraphic';
-import { FileText, Download, Github, Mail, ArrowDown } from 'lucide-react';
+import { FileText, Github, Mail, ArrowDown } from 'lucide-react';
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLElement>(null);
@@ -11,9 +11,9 @@ export default function HeroSection() {
   });
 
   // Scroll-linked motion: graphic scales/translates subtly as user leaves hero
-  const graphicScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const graphicOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.4]);
-  const graphicY = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  const graphicScale = useTransform(scrollYProgress, [0, 1], [1, 0.94]);
+  const graphicOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.5]);
+  const graphicY = useTransform(scrollYProgress, [0, 1], [0, 35]);
 
   // Split name for word-by-word masked slide-up
   const nameWords = ['Navin', 'Singh'];
@@ -24,9 +24,9 @@ export default function HeroSection() {
       id="hero"
       className="min-h-[100svh] w-full flex flex-col justify-center relative editorial-container pt-20 pb-12 overflow-hidden"
     >
-      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center flex-1">
-        {/* Left column: Text & CTA (55% width on desktop: cols 1-7) */}
-        <div className="lg:col-span-7 flex flex-col justify-center z-10">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center flex-1">
+        {/* Left column: Text & CTA (cols 1-6 on desktop) */}
+        <div className="lg:col-span-6 flex flex-col justify-center z-10">
           {/* Section index mono label */}
           <div className="section-mono-header">
             <span>00 // PORTFOLIO</span>
@@ -55,7 +55,7 @@ export default function HeroSection() {
             ))}
           </h1>
 
-          {/* Headline */}
+          {/* Headline & Description */}
           <m.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -70,7 +70,7 @@ export default function HeroSection() {
             </p>
           </m.div>
 
-          {/* Action buttons — all have clear text labels */}
+          {/* Action buttons: Single prominent Resume button + GitHub (rel="me") + Email */}
           <m.div
             className="flex flex-wrap items-center gap-3 mb-8"
             initial={{ opacity: 0, y: 16 }}
@@ -87,21 +87,13 @@ export default function HeroSection() {
               <span>View Resume</span>
             </a>
             <a
-              href="/Navin_resume.pdf"
-              download="Navin_Singh_Resume.pdf"
-              className="btn-editorial-secondary"
-            >
-              <Download size={16} aria-hidden="true" />
-              <span>Download PDF</span>
-            </a>
-            <a
               href="https://github.com/Navin45"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="me noopener noreferrer"
               className="btn-editorial-secondary"
             >
               <Github size={16} aria-hidden="true" />
-              <span>GitHub</span>
+              <span>GitHub / Navin45</span>
             </a>
             <a
               href="mailto:navinsingh04523@gmail.com"
@@ -113,9 +105,9 @@ export default function HeroSection() {
           </m.div>
         </div>
 
-        {/* Right column: Hero Graphic (at least 45% width on desktop: cols 8-12) */}
+        {/* Right column: High-Motion Hero Graphic (cols 7-12 on desktop: 50% width) */}
         <m.div
-          className="lg:col-span-5 w-full h-full flex items-center justify-center min-h-[320px] lg:min-h-[440px]"
+          className="lg:col-span-6 w-full h-full flex items-center justify-center min-h-[340px] lg:min-h-[460px]"
           style={{
             scale: graphicScale,
             opacity: graphicOpacity,
