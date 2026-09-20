@@ -10,6 +10,12 @@ interface Project {
   bullets: string[];
 }
 
+interface ProjectMatch {
+  name: string;
+  url: string;
+  description?: string | null;
+}
+
 interface RepoItem {
   name: string;
   url: string;
@@ -98,7 +104,7 @@ export default function ProjectsSection() {
     setSpotlightPos({ x: 0, y: 0, index: null });
   };
 
-  const projectMatches = (githubData && githubData.projectMatches) || {};
+  const projectMatches = ((githubData && githubData.projectMatches) || {}) as Record<string, ProjectMatch | null>;
   const moreRepos = (githubData && githubData.moreRepos) || [];
 
   return (
@@ -114,7 +120,7 @@ export default function ProjectsSection() {
         <div className="divide-y divide-[var(--border-subtle)] border-y border-[var(--border-subtle)]">
           {PROJECTS.map((project, idx) => {
             const isOpen = openIndex === idx;
-            const githubMatch = projectMatches[project.title as keyof typeof projectMatches];
+            const githubMatch = projectMatches[project.title];
             const isSpotlighted = spotlightPos.index === idx;
 
             return (
