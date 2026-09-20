@@ -1,7 +1,16 @@
-import { useReveal } from '@/hooks/use-reveal';
-import { Briefcase, GraduationCap, MapPin, Calendar } from 'lucide-react';
+import { useRef } from 'react';
+import { m, useScroll, useTransform } from 'motion/react';
+import { MapPin, Calendar } from 'lucide-react';
 
-const EXPERIENCE = [
+interface ExperienceItem {
+  company: string;
+  role: string;
+  period: string;
+  location: string;
+  bullets: string[];
+}
+
+const EXPERIENCES: ExperienceItem[] = [
   {
     company: 'Expandimo Technology Pvt. Ltd.',
     role: 'Automation Developer',
@@ -27,222 +36,138 @@ const EXPERIENCE = [
 ];
 
 const EDUCATION = {
-  school: 'Chandigarh Engineering College',
-  degree: 'B.Tech in Artificial Intelligence & Machine Learning',
-  cgpa: 'CGPA: 7.29 / 10.0',
+  institution: 'Chandigarh Engineering College',
+  degree: 'B.Tech in Artificial Intelligence & Machine Learning (CGPA: 7.29 / 10.0)',
   period: '2021 – 2025',
   location: 'Mohali, Punjab',
 };
 
-const ExperienceSection = () => {
-  const ref = useReveal();
+export default function ExperienceSection() {
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 80%', 'end 70%'],
+  });
+
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   return (
-    <section id="experience" className="section-container">
-      <div ref={ref}>
-        {/* Experience */}
-        <header className="reveal" style={{ marginBottom: 'var(--space-8)' }}>
-          <h2 className="section-title">Experience</h2>
-        </header>
+    <section id="experience" className="editorial-section">
+      <div className="editorial-container">
+        {/* Section header */}
+        <div className="section-mono-header">
+          <span>03 // BACKGROUND</span>
+        </div>
+        <h2 className="section-headline">Experience & Education</h2>
 
-        <div
-          className="stagger"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 'var(--space-5)',
-            marginBottom: 'var(--space-12)',
-          }}
-        >
-          {EXPERIENCE.map((job) => (
-            <article key={job.company} className="card-surface reveal">
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  alignItems: 'flex-start',
-                  gap: 'var(--space-3)',
-                  marginBottom: 'var(--space-4)',
-                }}
+        {/* Vertical Timeline */}
+        <div ref={timelineRef} className="relative pl-6 sm:pl-10 max-w-4xl">
+          {/* Background guide line */}
+          <div
+            className="absolute left-0 top-3 bottom-0 w-[2px] bg-[var(--border-subtle)]"
+            aria-hidden="true"
+          />
+
+          {/* Active drawing line tied to scroll progress */}
+          <m.div
+            className="absolute left-0 top-3 w-[2px] bg-[var(--accent)] origin-top will-change-transform"
+            style={{ height: lineHeight }}
+            aria-hidden="true"
+          />
+
+          {/* Experience entries */}
+          <div className="space-y-16">
+            {EXPERIENCES.map((exp, idx) => (
+              <m.div
+                key={exp.company}
+                className="relative"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
               >
+                {/* Timeline node marker */}
                 <div
-                  style={{
-                    width: '2.5rem',
-                    height: '2.5rem',
-                    borderRadius: 'var(--radius-lg)',
-                    backgroundColor: 'rgba(168, 85, 247, 0.1)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <Briefcase size={18} style={{ color: 'var(--accent)' }} aria-hidden="true" />
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <h3
-                    style={{
-                      fontSize: 'var(--text-xl)',
-                      fontWeight: 700,
-                      color: 'var(--text-primary)',
-                    }}
-                  >
-                    {job.role}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: 'var(--text-base)',
-                      color: 'var(--accent-subtle)',
-                      fontWeight: 500,
-                    }}
-                  >
-                    {job.company}
-                  </p>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexWrap: 'wrap',
-                      gap: 'var(--space-4)',
-                      marginTop: 'var(--space-1)',
-                      fontSize: 'var(--text-sm)',
-                      color: 'var(--text-muted)',
-                    }}
-                  >
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
-                      <Calendar size={14} aria-hidden="true" />
-                      {job.period}
-                    </span>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
-                      <MapPin size={14} aria-hidden="true" />
-                      {job.location}
+                  className="absolute -left-[30px] sm:-left-[46px] top-1.5 w-3 h-3 rounded-full bg-[#0a0a0a] border-2 border-[var(--accent)] z-10"
+                  aria-hidden="true"
+                />
+
+                {/* Company & Role */}
+                <div className="mb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+                    <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] tracking-tight">
+                      {exp.role}
+                    </h3>
+                    <div className="flex items-center gap-2 font-mono text-xs text-[var(--text-muted)]">
+                      <Calendar size={13} aria-hidden="true" />
+                      <span>{exp.period}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-mono text-[var(--accent-subtle)]">
+                    <span className="font-semibold">{exp.company}</span>
+                    <span className="text-[var(--text-muted)]">•</span>
+                    <span className="flex items-center gap-1 text-[var(--text-secondary)]">
+                      <MapPin size={12} aria-hidden="true" />
+                      {exp.location}
                     </span>
                   </div>
                 </div>
+
+                {/* Bullets */}
+                <ul className="space-y-2.5 mt-4">
+                  {exp.bullets.map((bullet, bIdx) => (
+                    <li
+                      key={bIdx}
+                      className="text-base text-[var(--text-secondary)] leading-relaxed pl-4 border-l border-[var(--border-subtle)]"
+                    >
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+              </m.div>
+            ))}
+
+            {/* Education entry */}
+            <m.div
+              className="relative pt-4"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              {/* Timeline node marker */}
+              <div
+                className="absolute -left-[30px] sm:-left-[46px] top-5 w-3 h-3 rounded-full bg-[#0a0a0a] border-2 border-[var(--accent-subtle)] z-10"
+                aria-hidden="true"
+              />
+
+              <div className="font-mono text-xs uppercase tracking-wider text-[var(--accent-subtle)] mb-2">
+                // Education
               </div>
 
-              <ul
-                style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 'var(--space-3)',
-                }}
-              >
-                {job.bullets.map((bullet, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      fontSize: 'var(--text-sm)',
-                      color: 'var(--text-secondary)',
-                      lineHeight: 1.6,
-                      paddingLeft: 'var(--space-4)',
-                      position: 'relative',
-                    }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute',
-                        left: 0,
-                        top: '0.5em',
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        backgroundColor: 'var(--accent)',
-                        opacity: 0.6,
-                      }}
-                    />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+                <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-primary)] tracking-tight">
+                  {EDUCATION.degree}
+                </h3>
+                <div className="flex items-center gap-2 font-mono text-xs text-[var(--text-muted)]">
+                  <Calendar size={13} aria-hidden="true" />
+                  <span>{EDUCATION.period}</span>
+                </div>
+              </div>
 
-        {/* Education */}
-        <header className="reveal" style={{ marginBottom: 'var(--space-5)' }}>
-          <h2 className="section-title">Education</h2>
-        </header>
-
-        <article className="card-surface reveal">
-          <div
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'flex-start',
-              gap: 'var(--space-3)',
-            }}
-          >
-            <div
-              style={{
-                width: '2.5rem',
-                height: '2.5rem',
-                borderRadius: 'var(--radius-lg)',
-                backgroundColor: 'rgba(168, 85, 247, 0.1)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}
-            >
-              <GraduationCap size={18} style={{ color: 'var(--accent)' }} aria-hidden="true" />
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <h3
-                style={{
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                }}
-              >
-                {EDUCATION.degree}
-              </h3>
-              <p
-                style={{
-                  fontSize: 'var(--text-base)',
-                  color: 'var(--accent-subtle)',
-                  fontWeight: 500,
-                }}
-              >
-                {EDUCATION.school}
-              </p>
-              <p
-                style={{
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--text-secondary)',
-                  marginTop: 'var(--space-1)',
-                }}
-              >
-                {EDUCATION.cgpa}
-              </p>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 'var(--space-4)',
-                  marginTop: 'var(--space-1)',
-                  fontSize: 'var(--text-sm)',
-                  color: 'var(--text-muted)',
-                }}
-              >
-                <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
-                  <Calendar size={14} aria-hidden="true" />
-                  {EDUCATION.period}
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)' }}>
-                  <MapPin size={14} aria-hidden="true" />
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-mono text-[var(--text-secondary)]">
+                <span>{EDUCATION.institution}</span>
+                <span className="text-[var(--text-muted)]">•</span>
+                <span className="flex items-center gap-1">
+                  <MapPin size={12} aria-hidden="true" />
                   {EDUCATION.location}
                 </span>
               </div>
-            </div>
+            </m.div>
           </div>
-        </article>
+        </div>
       </div>
     </section>
   );
-};
-
-export default ExperienceSection;
+}

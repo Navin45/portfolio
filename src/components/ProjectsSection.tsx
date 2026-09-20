@@ -1,7 +1,27 @@
-import { useReveal } from '@/hooks/use-reveal';
+import { useState } from 'react';
+import { m, AnimatePresence } from 'motion/react';
+import { ChevronDown, ExternalLink, Github } from 'lucide-react';
+import githubData from '@/data/github.json';
 
-const PROJECTS = [
+interface Project {
+  num: string;
+  title: string;
+  stack: string[];
+  bullets: string[];
+}
+
+interface RepoItem {
+  name: string;
+  url: string;
+  description: string;
+  language: string;
+  stars: number;
+  pushedAt: string;
+}
+
+const PROJECTS: Project[] = [
   {
+    num: '01',
     title: 'PFL Finance WhatsApp KPI Accountability Bot',
     stack: ['Python', 'FastAPI', 'PostgreSQL', 'Claude API', 'OpenClaw', 'React'],
     bullets: [
@@ -10,6 +30,7 @@ const PROJECTS = [
     ],
   },
   {
+    num: '02',
     title: 'SonoLabs AI Audio SaaS Backend',
     stack: ['FastAPI', 'PostgreSQL', 'Redis', 'Docker', 'GitHub Actions'],
     bullets: [
@@ -19,6 +40,7 @@ const PROJECTS = [
     ],
   },
   {
+    num: '03',
     title: 'GCOS Cloud & Workflow Infrastructure',
     stack: ['Terraform', 'AWS', 'PostgreSQL', 'Cognito', 'n8n', 'HubSpot'],
     bullets: [
@@ -27,6 +49,7 @@ const PROJECTS = [
     ],
   },
   {
+    num: '04',
     title: 'Stancold Document Scanner',
     stack: ['n8n', 'Pipedrive', 'Docker'],
     bullets: [
@@ -36,6 +59,7 @@ const PROJECTS = [
     ],
   },
   {
+    num: '05',
     title: 'LeadBoxer n8n Community Node',
     stack: ['TypeScript', 'n8n', 'LeadBoxer API', 'Docker'],
     bullets: [
@@ -46,97 +70,217 @@ const PROJECTS = [
   },
 ];
 
-const ProjectsSection = () => {
-  const ref = useReveal();
+export default function ProjectsSection() {
+  // First project open by default
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [spotlightPos, setSpotlightPos] = useState<{ x: number; y: number; index: number | null }>({
+    x: 0,
+    y: 0,
+    index: null,
+  });
+
+  const toggleProject = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>, index: number) => {
+    // Only on desktop pointer
+    if (e.pointerType !== 'mouse') return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    setSpotlightPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      index,
+    });
+  };
+
+  const handlePointerLeave = () => {
+    setSpotlightPos({ x: 0, y: 0, index: null });
+  };
+
+  const projectMatches = (githubData && githubData.projectMatches) || {};
+  const moreRepos = (githubData && githubData.moreRepos) || [];
 
   return (
-    <section id="projects" className="section-container">
-      <div ref={ref}>
-        <header className="reveal" style={{ marginBottom: 'var(--space-8)' }}>
-          <h2 className="section-title">Projects</h2>
-          <p className="section-subtitle">
-            Production systems spanning AI automation, backend infrastructure, and workflow orchestration.
-          </p>
-        </header>
-
-        <div
-          className="stagger"
-          style={{
-            display: 'grid',
-            gap: 'var(--space-5)',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 28rem), 1fr))',
-          }}
-        >
-          {PROJECTS.map((project) => (
-            <article key={project.title} className="card-surface reveal">
-              <h3
-                style={{
-                  fontSize: 'var(--text-xl)',
-                  fontWeight: 700,
-                  color: 'var(--text-primary)',
-                  marginBottom: 'var(--space-3)',
-                }}
-              >
-                {project.title}
-              </h3>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: 'var(--space-2)',
-                  marginBottom: 'var(--space-4)',
-                }}
-              >
-                {project.stack.map((tech) => (
-                  <span key={tech} className="badge">{tech}</span>
-                ))}
-              </div>
-
-              <ul
-                style={{
-                  listStyle: 'none',
-                  padding: 0,
-                  margin: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 'var(--space-3)',
-                }}
-              >
-                {project.bullets.map((bullet, i) => (
-                  <li
-                    key={i}
-                    style={{
-                      fontSize: 'var(--text-sm)',
-                      color: 'var(--text-secondary)',
-                      lineHeight: 1.6,
-                      paddingLeft: 'var(--space-4)',
-                      position: 'relative',
-                    }}
-                  >
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute',
-                        left: 0,
-                        top: '0.5em',
-                        width: '6px',
-                        height: '6px',
-                        borderRadius: '50%',
-                        backgroundColor: 'var(--accent)',
-                        opacity: 0.6,
-                      }}
-                    />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
+    <section id="projects" className="editorial-section">
+      <div className="editorial-container">
+        {/* Section header */}
+        <div className="section-mono-header">
+          <span>01 // FEATURED WORK</span>
         </div>
+        <h2 className="section-headline">Selected Projects</h2>
+
+        {/* Editorial Numbered Rows */}
+        <div className="divide-y divide-[var(--border-subtle)] border-y border-[var(--border-subtle)]">
+          {PROJECTS.map((project, idx) => {
+            const isOpen = openIndex === idx;
+            const githubMatch = projectMatches[project.title as keyof typeof projectMatches];
+            const isSpotlighted = spotlightPos.index === idx;
+
+            return (
+              <m.div
+                key={project.num}
+                className="relative overflow-hidden group transition-colors duration-200"
+                onPointerMove={(e) => handlePointerMove(e, idx)}
+                onPointerLeave={handlePointerLeave}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              >
+                {/* Subtle desktop cursor spotlight */}
+                {isSpotlighted && (
+                  <div
+                    className="pointer-events-none absolute inset-0 transition-opacity duration-300 hidden md:block"
+                    style={{
+                      background: `radial-gradient(400px circle at ${spotlightPos.x}px ${spotlightPos.y}px, rgba(168, 85, 247, 0.08), transparent 80%)`,
+                    }}
+                  />
+                )}
+
+                {/* Row Trigger Button */}
+                <button
+                  type="button"
+                  onClick={() => toggleProject(idx)}
+                  className="w-full text-left py-6 sm:py-8 flex flex-col md:flex-row md:items-baseline justify-between gap-4 cursor-pointer focus-visible:bg-[#141414]"
+                  aria-expanded={isOpen}
+                  aria-controls={`project-details-${project.num}`}
+                >
+                  <div className="flex items-baseline gap-4 sm:gap-6 flex-1">
+                    <span className="font-mono text-sm sm:text-base text-[var(--accent-subtle)] shrink-0 font-semibold">
+                      {project.num}
+                    </span>
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-[var(--text-primary)] group-hover:text-[var(--accent-subtle)] transition-colors duration-150">
+                      {project.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center justify-between md:justify-end gap-6 shrink-0 pl-10 md:pl-0">
+                    <span className="font-mono text-xs sm:text-sm text-[var(--text-secondary)]">
+                      {project.stack.slice(0, 3).join(' • ')}
+                    </span>
+                    <ChevronDown
+                      size={20}
+                      className={`text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-transform duration-300 ${
+                        isOpen ? 'rotate-180 text-[var(--accent-subtle)]' : ''
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </div>
+                </button>
+
+                {/* Expandable Details Container */}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <m.div
+                      id={`project-details-${project.num}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-8 pl-10 sm:pl-12 max-w-4xl">
+                        {/* Tech stack full list */}
+                        <div className="mb-4 flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-xs text-[var(--text-muted)] uppercase tracking-wider">
+                            Stack:
+                          </span>
+                          <span className="font-mono text-xs sm:text-sm text-[var(--text-secondary)]">
+                            {project.stack.join(', ')}
+                          </span>
+                        </div>
+
+                        {/* Bullets */}
+                        <ul className="space-y-3 mb-6">
+                          {project.bullets.map((bullet, bIdx) => (
+                            <li
+                              key={bIdx}
+                              className="text-base text-[var(--text-secondary)] leading-relaxed pl-4 border-l-2 border-[var(--border-subtle)]"
+                            >
+                              {bullet}
+                            </li>
+                          ))}
+                        </ul>
+
+                        {/* GitHub link if verified match exists */}
+                        {githubMatch && (
+                          <div className="pt-2">
+                            <a
+                              href={githubMatch.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="btn-editorial-secondary !py-2 !px-4 text-xs inline-flex items-center gap-2"
+                            >
+                              <Github size={14} aria-hidden="true" />
+                              <span>GitHub Repository</span>
+                              <ExternalLink size={12} aria-hidden="true" />
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </m.div>
+                  )}
+                </AnimatePresence>
+              </m.div>
+            );
+          })}
+        </div>
+
+        {/* "More on GitHub" row */}
+        {moreRepos.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-[var(--border-subtle)]">
+            <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4 mb-6">
+              <span className="font-mono text-xs uppercase tracking-wider text-[var(--accent-subtle)]">
+                // More Open Source on GitHub
+              </span>
+              <a
+                href="https://github.com/Navin45?tab=repositories"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-[var(--text-secondary)] hover:text-[var(--accent-subtle)] transition-colors inline-flex items-center gap-1"
+              >
+                <span>View all repositories</span>
+                <ExternalLink size={12} aria-hidden="true" />
+              </a>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {moreRepos.map((repo: RepoItem) => (
+                <a
+                  key={repo.name}
+                  href={repo.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-4 bg-[#121212] border border-[var(--border-subtle)] rounded hover:border-[var(--accent-subtle)] transition-colors group flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="font-mono text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent-subtle)] transition-colors">
+                        {repo.name}
+                      </span>
+                      <Github size={14} className="text-[var(--text-muted)]" aria-hidden="true" />
+                    </div>
+                    {repo.description ? (
+                      <p className="text-xs text-[var(--text-secondary)] line-clamp-2 mb-3">
+                        {repo.description}
+                      </p>
+                    ) : (
+                      <p className="text-xs text-[var(--text-muted)] italic mb-3">
+                        Public repository
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 font-mono text-[11px] text-[var(--text-muted)]">
+                    {repo.language && <span>{repo.language}</span>}
+                    {repo.stars > 0 && <span>★ {repo.stars}</span>}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
-};
-
-export default ProjectsSection;
+}

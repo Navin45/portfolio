@@ -1,64 +1,68 @@
-import { useReveal } from '@/hooks/use-reveal';
+import { m } from 'motion/react';
 import { Mail, Github, FileText, Download } from 'lucide-react';
 
-const ContactSection = () => {
-  const ref = useReveal();
-
+export default function ContactSection() {
   return (
-    <section id="contact" className="section-container">
-      <div ref={ref}>
-        <header className="reveal" style={{ marginBottom: 'var(--space-6)' }}>
-          <h2 className="section-title">Get in Touch</h2>
-          <p className="section-subtitle">
-            Open to opportunities and collaboration — reach out via email or GitHub.
-          </p>
-        </header>
+    <section id="contact" className="editorial-section">
+      <div className="editorial-container">
+        {/* Section header */}
+        <div className="section-mono-header">
+          <span>04 // CONTACT</span>
+        </div>
+        <h2 className="section-headline">Get In Touch</h2>
 
-        <div className="reveal" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)', maxWidth: '32rem' }}>
-          {/* Contact links */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
+        <m.div
+          className="max-w-2xl"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="text-lg sm:text-xl text-[var(--text-secondary)] mb-8 leading-relaxed">
+            Interested in collaborating on AI engineering, agentic workflows, or backend infrastructure?
+            Feel free to reach out directly via email or check out my work on GitHub.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4">
             <a
               href="mailto:navinsingh04523@gmail.com"
-              className="btn-primary"
+              className="btn-editorial-primary"
             >
-              <Mail size={18} aria-hidden="true" />
-              navinsingh04523@gmail.com
+              <Mail size={16} aria-hidden="true" />
+              <span>navinsingh04523@gmail.com</span>
             </a>
+
             <a
               href="https://github.com/Navin45"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-outline"
+              className="btn-editorial-secondary"
             >
-              <Github size={18} aria-hidden="true" />
-              GitHub
+              <Github size={16} aria-hidden="true" />
+              <span>GitHub / Navin45</span>
             </a>
-          </div>
 
-          {/* Resume actions */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
             <a
               href="/Navin_resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-outline"
+              className="btn-editorial-secondary"
             >
-              <FileText size={18} aria-hidden="true" />
-              View Resume
+              <FileText size={16} aria-hidden="true" />
+              <span>View Resume</span>
             </a>
+
             <a
               href="/Navin_resume.pdf"
               download="Navin_Singh_Resume.pdf"
-              className="btn-outline"
+              className="btn-editorial-secondary"
             >
-              <Download size={18} aria-hidden="true" />
-              Download Resume
+              <Download size={16} aria-hidden="true" />
+              <span>Download PDF</span>
             </a>
           </div>
-        </div>
+        </m.div>
       </div>
     </section>
   );
-};
-
-export default ContactSection;
+}
