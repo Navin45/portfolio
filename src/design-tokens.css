@@ -1,79 +1,85 @@
 /* ==========================================================================
-   Design Tokens — Navin Singh Portfolio
-   Hand-written following ui-design-system skill scales.
-   Accent: #A855F7 (purple-500). Style preset: modern. Dark-only theme.
+   Design Tokens — Navin Singh Portfolio (Round 2 Editorial Overhaul)
+   Fonts: Self-hosted Space Grotesk (Display) & JetBrains Mono (Code/Labels)
+   Base: Neutral near-black (pure dark, NO blue/navy tint) with off-white text.
+   Accent: Violet (#A855F7) used sparingly for active states, pulses, interactions.
    ========================================================================== */
 
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/space-grotesk-variable.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-variable.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  /* --- Color: Neutral (dark) --- */
-  --neutral-50: #f5f5f7;
-  --neutral-100: #e5e5ea;
-  --neutral-200: #c7c7cc;
-  --neutral-300: #a1a1aa;
-  --neutral-400: #71717a;
-  --neutral-500: #52525b;
-  --neutral-600: #3f3f46;
-  --neutral-700: #2c2c33;
-  --neutral-800: #1a1a2e;
-  --neutral-900: #0f0f1a;
-  --neutral-950: #0a0a14;
+  /* --- Typography Families --- */
+  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* --- Color: Accent (purple) ---
-     #A855F7 on #0a0a14 = 4.98:1 (AA large text ✓, AA normal ✓ at ≥4.5)
-     #C084FC on #1a1a2e = 6.46:1 (AA normal ✓)
-     #9333EA on white   = 5.38:1 (AA normal ✓)
-     #A855F7 on #1a1a2e = 4.31:1 (AA large text ✓, normal ✗ → use --accent-subtle)
-     #C084FC on #0a0a14 = 7.53:1 (AA normal ✓)
-     White on #9333EA   = 5.38:1 (AA normal ✓)
-  */
-  --accent-50: #faf5ff;
-  --accent-100: #f3e8ff;
-  --accent-200: #e9d5ff;
-  --accent-300: #c084fc; /* small text on cards */
-  --accent-400: #a855f7;
-  --accent-500: #a855f7; /* text/borders on page bg */
-  --accent-600: #9333ea; /* filled buttons with white text */
-  --accent-700: #7e22ce;
-  --accent-800: #6b21a8;
-  --accent-900: #581c87;
+  /* --- Color: Neutral (pure near-black, NO blue tint) --- */
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-850: #1c1c1c;
+  --neutral-900: #141414;
+  --neutral-950: #0a0a0a;
 
-  --accent-subtle: #c084fc;
-  --accent: #a855f7;
-  --accent-interactive: #9333ea;
+  /* --- Color: Accent (Violet) --- */
+  --accent-subtle: #c084fc;       /* purple-300: small text, badges */
+  --accent: #a855f7;              /* purple-500: focus, active line, pulses */
+  --accent-interactive: #9333ea;  /* purple-600: interactive button fill */
+  --accent-muted: rgba(168, 85, 247, 0.15);
 
   /* --- Surfaces --- */
-  --surface-page: var(--neutral-950);
-  --surface-card: var(--neutral-800);
-  --surface-card-hover: var(--neutral-700);
-  --surface-elevated: var(--neutral-700);
-  --surface-overlay: rgba(10, 10, 20, 0.8);
+  --surface-page: #0a0a0a;
+  --surface-card: #121212;
+  --surface-card-hover: #181818;
+  --surface-elevated: #1f1f1f;
+  --surface-overlay: rgba(10, 10, 10, 0.85);
 
   /* --- Text --- */
-  --text-primary: var(--neutral-50);
-  --text-secondary: var(--neutral-300);
-  --text-muted: var(--neutral-400);
+  --text-primary: #fafafa;
+  --text-secondary: #a3a3a3; /* 5.5:1 on #0a0a0a — WCAG AA pass */
+  --text-muted: #737373;
   --text-accent: var(--accent);
-  --text-accent-on-card: var(--accent-subtle);
+  --text-accent-subtle: var(--accent-subtle);
   --text-on-accent: #ffffff;
 
   /* --- Borders --- */
-  --border-default: var(--neutral-600);
-  --border-subtle: var(--neutral-700);
+  --border-subtle: #262626;
+  --border-default: #333333;
   --border-accent: var(--accent);
   --border-focus: var(--accent-subtle);
 
-  /* --- Type Scale (1.25 ratio, 16px base, fluid clamp) --- */
-  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);    /* 12–13px */
-  --text-sm: clamp(0.8125rem, 0.75rem + 0.3vw, 0.875rem);    /* 13–14px */
-  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);      /* 16–17px */
-  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);       /* 18–20px */
-  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);         /* 20–24px */
-  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);          /* 24–30px */
-  --text-3xl: clamp(1.875rem, 1.5rem + 1.5vw, 2.5rem);        /* 30–40px */
-  --text-4xl: clamp(2.25rem, 1.8rem + 2vw, 3rem);             /* 36–48px */
-  --text-5xl: clamp(2.75rem, 2rem + 3vw, 4rem);               /* 44–64px */
+  /* --- Type Scale (Fluid clamp) --- */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.8125rem);     /* 12–13px */
+  --text-sm: clamp(0.875rem, 0.8rem + 0.3vw, 0.9375rem);    /* 14–15px */
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.0625rem);     /* 16–17px (body >= 16px) */
+  --text-lg: clamp(1.125rem, 1.05rem + 0.4vw, 1.25rem);      /* 18–20px */
+  --text-xl: clamp(1.35rem, 1.2rem + 0.7vw, 1.6rem);        /* 21–25px */
+  --text-2xl: clamp(1.65rem, 1.4rem + 1.2vw, 2.1rem);       /* 26–33px */
+  --text-3xl: clamp(2.2rem, 1.8rem + 1.8vw, 3rem);          /* 35–48px */
+  --text-4xl: clamp(2.8rem, 2.2rem + 2.5vw, 4rem);          /* 45–64px */
+  --text-display: clamp(3.5rem, 2.5rem + 7vw, 9rem);        /* Oversized clamp up to 10vw */
 
-  /* --- Spacing (8pt grid) --- */
+  /* --- Spacing --- */
   --space-1: 0.25rem;   /* 4px */
   --space-2: 0.5rem;    /* 8px */
   --space-3: 0.75rem;   /* 12px */
@@ -82,58 +88,25 @@
   --space-6: 2rem;      /* 32px */
   --space-8: 3rem;      /* 48px */
   --space-10: 4rem;     /* 64px */
-  --space-12: 6rem;     /* 96px */
-  --space-16: 8rem;     /* 128px */
+  --space-12: 5rem;     /* 80px */
+  --space-16: 7.5rem;   /* 120px — no vertical gap over 160px */
 
-  /* --- Border Radius --- */
-  --radius-sm: 0.375rem;  /* 6px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
-  --radius-xl: 1rem;      /* 16px */
-  --radius-2xl: 1.5rem;   /* 24px */
-  --radius-full: 9999px;
+  --section-padding: clamp(3.5rem, 6vw, 6rem);
+  --section-gap: clamp(4rem, 7vw, 7.5rem);
 
-  /* --- Motion --- */
+  /* --- Touch Targets --- */
+  --touch-target: 2.75rem; /* 44px minimum */
+
+  /* --- Motion Tokens --- */
   --duration-fast: 150ms;
   --duration-normal: 300ms;
-  --duration-slow: 500ms;
+  --duration-slow: 600ms;
   --duration-slower: 800ms;
-  --easing-default: cubic-bezier(0.4, 0, 0.2, 1);
-  --easing-in: cubic-bezier(0.4, 0, 1, 1);
-  --easing-out: cubic-bezier(0, 0, 0.2, 1);
-  --easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --easing-default: cubic-bezier(0.16, 1, 0.3, 1); /* expo out */
+  --easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --stagger-delay: 80ms;
 
-  /* --- Shadows --- */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-accent: 0 4px 20px rgba(168, 85, 247, 0.2);
-  --shadow-accent-lg: 0 8px 40px rgba(168, 85, 247, 0.3);
-
-  /* --- Focus --- */
-  --focus-ring: 0 0 0 2px var(--surface-page), 0 0 0 4px var(--accent-subtle);
-
-  /* --- Touch target --- */
-  --touch-target: 2.75rem; /* 44px */
+  /* --- Focus Ring --- */
+  --focus-ring: 0 0 0 2px #0a0a0a, 0 0 0 4px var(--accent-subtle);
 }
-
-/* Contrast verification table:
-   ┌─────────────────────────┬───────────────────┬────────┬──────┐
-   │ Text Color              │ Background        │ Ratio  │ Pass │
-   ├─────────────────────────┼───────────────────┼────────┼──────┤
-   │ --neutral-50 (#f5f5f7)  │ --neutral-950     │ 17.8:1 │ AAA  │
-   │ --neutral-50            │ --neutral-800     │ 11.5:1 │ AAA  │
-   │ --neutral-300 (#a1a1aa) │ --neutral-950     │  7.5:1 │ AAA  │
-   │ --neutral-300           │ --neutral-800     │  4.9:1 │ AA   │
-   │ --neutral-400 (#71717a) │ --neutral-950     │  4.6:1 │ AA   │
-   │ --accent (#a855f7)      │ --neutral-950     │  5.0:1 │ AA   │
-   │ --accent                │ --neutral-800     │  4.3:1 │ AA-L │
-   │ --accent-subtle(#c084fc)│ --neutral-950     │  7.5:1 │ AAA  │
-   │ --accent-subtle         │ --neutral-800     │  6.5:1 │ AA   │
-   │ --accent-subtle         │ --neutral-700     │  5.1:1 │ AA   │
-   │ White (#fff)            │ --accent-inter.   │  5.4:1 │ AA   │
-   │ --neutral-50            │ --neutral-600     │  6.7:1 │ AA   │
-   └─────────────────────────┴───────────────────┴────────┴──────┘
-   AA = ≥4.5:1 normal text, AA-L = ≥3:1 large text only
-*/
